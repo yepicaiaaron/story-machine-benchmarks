@@ -18,6 +18,8 @@
 **Story Machine Benchmarks** is the ongoing tracking project for testing the mathematical and visual limits of real-time AI video generation models on high-end hardware (NVIDIA H100). 
 It provides an interactive, side-by-side visual matrix to compare model outputs as compute constraints are scaled up and down.
 
+**This project builds upon the foundational real-time acceleration pipeline engineering pioneered in [Helios-Unleashed](https://github.com/yepicaiaaron/Helios-Unleashed).** By translating their 3-Stage Async Pipeline, NVENC zero-copy integration, and RIFE optical flow architectures into our live WebRTC dashboard, we are able to consistently document the edge of what's possible for live video synthesis.
+
 If you want to understand the true trade-off between framerate and visual fidelity in modern video diffusion pipelines, this is the place.
 
 [View Interactive Gallery](https://yepicaiaaron.github.io/story-machine-benchmarks/) · [Core Story Machine Repo](https://github.com/StoryMachineAI/story-machine-ai)
