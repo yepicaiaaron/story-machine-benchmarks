@@ -22,6 +22,10 @@
         select { padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px; font-size: 1em; width: 100%; max-width: 500px; margin-bottom: 15px; }
         button { padding: 12px 30px; font-size: 1.2em; background: #4ade80; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
         button:hover { background: #22c55e; }
+    
+        .stats-label { margin-top: 5px; font-size: 0.9em; color: #aaa; }
+        .compare-stats { margin-top: 10px; font-size: 1.1em; color: #4ade80; }
+
     </style>
 </head>
 <body>
@@ -78,6 +82,7 @@
                     </optgroup>
                 </select>
                 <video id="video1" src="videos/clip_p0_res512x288_steps8.webm" controls muted playsinline></video>
+                <div id="stats1" class="compare-stats">Rendered in 20.0s @ 22.1 FPS</div>
             </div>
 
             <div class="compare-col">
@@ -120,16 +125,24 @@
                     </optgroup>
                 </select>
                 <video id="video2" src="videos/clip_p0_res512x288_steps12.webm" controls muted playsinline></video>
+                <div id="stats2" class="compare-stats">Rendered in 20.0s @ 16.3 FPS</div>
             </div>
         </div>
     </div>
 
     <script>
+        const videoStats = {"clip_p0_res512x288_steps2.webm": "49.3 FPS", "clip_p0_res512x288_steps3.webm": "38.9 FPS", "clip_p0_res512x288_steps4.webm": "36.7 FPS", "clip_p0_res512x288_steps6.webm": "27.5 FPS", "clip_p0_res512x288_steps8.webm": "22.1 FPS", "clip_p0_res512x288_steps10.webm": "18.8 FPS", "clip_p0_res512x288_steps12.webm": "16.3 FPS", "clip_p0_res848x480_steps2.webm": "28.3 FPS", "clip_p0_res848x480_steps3.webm": "24.3 FPS", "clip_p0_res848x480_steps4.webm": "20.6 FPS", "clip_p0_res848x480_steps6.webm": "16.5 FPS", "clip_p0_res848x480_steps8.webm": "13.3 FPS", "clip_p0_res848x480_steps10.webm": "11.3 FPS", "clip_p0_res848x480_steps12.webm": "9.3 FPS", "clip_p1_res512x288_steps2.webm": "47.2 FPS", "clip_p1_res512x288_steps3.webm": "40.5 FPS", "clip_p1_res512x288_steps4.webm": "34.8 FPS", "clip_p1_res512x288_steps6.webm": "27.1 FPS", "clip_p1_res512x288_steps8.webm": "23.0 FPS", "clip_p1_res512x288_steps10.webm": "19.3 FPS", "clip_p1_res512x288_steps12.webm": "16.7 FPS", "clip_p1_res848x480_steps2.webm": "28.7 FPS", "clip_p1_res848x480_steps3.webm": "23.9 FPS", "clip_p1_res848x480_steps4.webm": "20.5 FPS", "clip_p1_res848x480_steps6.webm": "16.4 FPS", "clip_p1_res848x480_steps8.webm": "13.3 FPS", "clip_p1_res848x480_steps10.webm": "11.1 FPS", "clip_p1_res848x480_steps12.webm": "9.4 FPS"};
+
         function updateVideo(videoId, src) {
             const vid = document.getElementById(videoId);
             vid.src = src;
             vid.load();
+            const filename = src.split('/').pop();
+            const statsDivId = videoId === 'video1' ? 'stats1' : 'stats2';
+            const statsText = videoStats[filename] || 'Unknown FPS';
+            document.getElementById(statsDivId).innerText = `Rendered in 20.0s @ ${statsText}`;
         }
+
 
         document.getElementById('syncPlayBtn').addEventListener('click', function() {
             const v1 = document.getElementById('video1');
@@ -158,26 +171,26 @@
         <div class="resolution-row">
             <div class="resolution-header">512 x 288 (Native)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 49.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div><div class="stats-label">20.0s @ 38.9 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 36.7 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div><div class="stats-label">20.0s @ 27.5 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 22.1 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div><div class="stats-label">20.0s @ 18.8 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 16.3 FPS</div></div>
             </div>
         </div>
 
         <div class="resolution-row">
             <div class="resolution-header">848 x 480 (High-Res Cinematic)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 28.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div><div class="stats-label">20.0s @ 24.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 20.6 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div><div class="stats-label">20.0s @ 16.5 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 13.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div><div class="stats-label">20.0s @ 11.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 9.3 FPS</div></div>
             </div>
         </div>
     </div>
@@ -190,26 +203,26 @@
         <div class="resolution-row">
             <div class="resolution-header">512 x 288 (Native)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 47.2 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div><div class="stats-label">20.0s @ 40.5 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 34.8 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div><div class="stats-label">20.0s @ 27.1 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 23.0 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div><div class="stats-label">20.0s @ 19.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 16.7 FPS</div></div>
             </div>
         </div>
 
         <div class="resolution-row">
             <div class="resolution-header">848 x 480 (High-Res Cinematic)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 28.7 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div><div class="stats-label">20.0s @ 23.9 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 20.5 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div><div class="stats-label">20.0s @ 16.4 FPS</div></div>
                 <div class="video-card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div><div class="stats-label">20.0s @ 11.1 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 9.4 FPS</div></div>
             </div>
         </div>
     </div>
