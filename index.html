@@ -3,416 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Machine — Benchmarks</title>
+    <title>Story Machine Benchmarks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,300..900;1,300..900&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --surface: #0f0f11;
-            --surface-border: #222;
-            --text-main: #f0f0f0;
-            --text-muted: #888;
-            --accent: #E5FF00;
-            --accent-glow: rgba(229, 255, 0, 0.15);
-            --rife: #FF0055;
-            --rife-glow: rgba(255, 0, 85, 0.15);
+            --bg-primary: #F7F5F0;
+            --bg-secondary: #EBE7E0;
+            --text-primary: #1A1A1A;
+            --text-secondary: #5C5C5C;
+            --accent: #D33F00;
+            --border: #D1CDCD;
             
-            --font-display: 'Syne', sans-serif;
-            --font-mono: 'Chivo Mono', monospace;
+            --font-display: 'Fraunces', serif;
+            --font-sans: 'Bricolage Grotesque', sans-serif;
         }
 
-        /* Basic Reset */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0D0D0D;
+                --bg-secondary: #171717;
+                --text-primary: #F2F2F2;
+                --text-secondary: #A3A3A3;
+                --accent: #FF5500;
+                --border: #2E2E2E;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: var(--font-mono);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Grain texture overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9999;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--surface-border); }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-        /* Typography */
-        h1, h2, h3, h4 { font-family: var(--font-display); text-transform: uppercase; line-height: 1.1; }
-        
-        /* Layout */
-        .container { max-width: 1400px; margin: 0 auto; padding: 4rem 2rem; position: relative; }
-        
-        /* Header section */
-        header {
-            margin-bottom: 6rem;
-            position: relative;
-            animation: fadeUp 1s ease forwards;
-        }
-        .header-meta {
-            display: flex;
-            gap: 2rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--surface-border);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        header h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-        }
-        header h1::after {
-            content: "";
-            position: absolute;
-            bottom: 10px;
-            right: -20px;
-            width: 15px;
-            height: 15px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--accent);
-        }
-        header p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 600px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* Animations */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--accent);
+            transition: color 0.3s, border-color 0.3s;
         }
-        .animate-stagger > * {
-            opacity: 0;
-            animation: fadeUp 0.8s ease forwards;
-        }
-        .animate-stagger > *:nth-child(1) { animation-delay: 0.1s; }
-        .animate-stagger > *:nth-child(2) { animation-delay: 0.2s; }
-        .animate-stagger > *:nth-child(3) { animation-delay: 0.3s; }
-        .animate-stagger > *:nth-child(4) { animation-delay: 0.4s; }
-        
-        /* Interactive Side-by-Side */
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            font-weight: 700;
-            border-left: 4px solid var(--accent);
-            padding-left: 1.5rem;
-        }
-        
-        .compare-module {
-            background: var(--surface);
-            border: 1px solid var(--surface-border);
-            padding: 3rem;
-            position: relative;
-            margin-bottom: 6rem;
-        }
-        
-        .compare-module::before {
-            content: "TOOL: 01";
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: var(--bg);
-            padding: 0 10px;
-            font-size: 0.8rem;
+
+        a:hover {
             color: var(--accent);
-            letter-spacing: 0.1em;
         }
 
-        .compare-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--surface-border);
-            padding-bottom: 2rem;
+        /* Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2vw;
         }
 
-        button {
-            background: var(--accent);
-            color: #000;
-            font-family: var(--font-mono);
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 0.9rem;
-            font-weight: 700;
+        /* Header / Editorial Hero */
+        header {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4rem;
+        }
+
+        .eyebrow {
+            font-family: var(--font-sans);
             text-transform: uppercase;
+            font-size: 0.85rem;
             letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: block;
         }
-        button:hover {
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px var(--accent-glow);
-        }
-        button::before {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            transition: all 0.5s ease;
-        }
-        button:hover::before { left: 100%; }
 
-        .video-grid {
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 300;
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            font-variation-settings: "SOFT" 0, "WONK" 1;
+        }
+
+        h1 i {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .hero-desc {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            max-width: 800px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* StoryMachine Reference Box */
+        .thesis-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 4px;
+            margin-top: 3rem;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .thesis-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        .thesis-text {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Section Typography */
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Comparison */
+        .comparison-section {
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .video-col {
+        @media (max-width: 900px) {
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+
+        .controls-top {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        button.play-sync {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 2rem;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button.play-sync:hover {
+            transform: scale(1.02);
+            background: var(--accent);
         }
 
         select {
             appearance: none;
-            background: var(--bg);
-            color: var(--text-main);
-            font-family: var(--font-mono);
-            border: 1px solid var(--surface-border);
-            padding: 1rem;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
             width: 100%;
+            padding: 1rem;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
             cursor: pointer;
             outline: none;
-            transition: border-color 0.3s ease;
-            background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%), linear-gradient(135deg, var(--accent) 50%, transparent 50%);
-            background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
-            background-size: 5px 5px, 5px 5px;
+            margin-bottom: 1rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
         }
-        select:focus, select:hover { border-color: var(--accent); }
-        select optgroup { font-family: var(--font-mono); background: var(--bg); color: var(--accent); }
-        select option { color: var(--text-main); }
+
+        select:focus {
+            border-color: var(--accent);
+        }
 
         .video-wrapper {
-            position: relative;
             background: #000;
-            border: 1px solid var(--surface-border);
+            width: 100%;
             aspect-ratio: 16/9;
+            border-radius: 4px;
             overflow: hidden;
         }
-        .video-wrapper::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border: 1px solid rgba(255,255,255,0.05);
-            pointer-events: none;
-        }
-        
+
         video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: grayscale(20%);
-            transition: filter 0.5s ease;
         }
-        video:hover { filter: grayscale(0%); }
 
-        .stats-display {
-            font-size: 0.9rem;
-            color: var(--accent);
-            padding: 1rem;
-            background: rgba(229, 255, 0, 0.05);
-            border-left: 2px solid var(--accent);
+        .stats-bar {
             display: flex;
             justify-content: space-between;
-        }
-
-        /* RIFE Module specific */
-        .rife-module {
-            border-color: var(--rife);
-        }
-        .rife-module::before {
-            content: "TOOL: 02 (RIFE AI)";
-            color: var(--rife);
-        }
-        .rife-module .section-title {
-            border-color: var(--rife);
-        }
-        .rife-module button {
-            background: var(--rife);
-            color: #fff;
-        }
-        .rife-module button:hover {
-            box-shadow: 0 10px 20px var(--rife-glow);
-        }
-        .rife-module select {
-            background-image: linear-gradient(45deg, transparent 50%, var(--rife) 50%), linear-gradient(135deg, var(--rife) 50%, transparent 50%);
-        }
-        .rife-module select:focus, .rife-module select:hover { border-color: var(--rife); }
-        .rife-module .stats-display {
-            color: var(--rife);
-            background: rgba(255, 0, 85, 0.05);
-            border-color: var(--rife);
-        }
-
-        .rife-explainer {
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: var(--bg);
-            border: 1px dashed var(--rife);
+            padding: 1rem 0;
             font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
         }
-        .rife-explainer strong { color: var(--rife); }
 
-        /* Matrix Grid */
+        .stats-bar span.highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Matrix Section */
         .matrix-section {
-            margin-top: 6rem;
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--border);
         }
-        .prompt-block {
-            margin-bottom: 5rem;
+
+        .prompt-group {
+            margin-bottom: 6rem;
         }
-        .prompt-block h3 {
+
+        .prompt-desc {
+            font-family: var(--font-display);
             font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 900px;
+            line-height: 1.4;
+        }
+
+        .res-group {
+            margin-bottom: 4rem;
+        }
+
+        .res-title {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-        .prompt-block h3::before {
+
+        .res-title::after {
             content: "";
-            display: inline-block;
-            width: 30px; height: 1px;
-            background: var(--surface-border);
-        }
-        .prompt-desc {
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            padding-left: calc(30px + 1rem);
-            font-size: 0.9rem;
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
 
-        .res-group {
-            margin-bottom: 3rem;
-            background: var(--surface);
-            padding: 2rem;
-            border: 1px solid var(--surface-border);
-        }
-        .res-header {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            color: #fff;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .res-header span {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            background: var(--bg);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-        }
-
-        .cards-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .card {
-            background: var(--bg);
-            border: 1px solid var(--surface-border);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--text-muted);
+
+        .card .video-wrapper {
+            margin-bottom: 0.5rem;
         }
-        .card video {
-            width: 100%;
-            aspect-ratio: 16/9;
-            display: block;
-            border-bottom: 1px solid var(--surface-border);
-        }
-        .card-info {
-            padding: 1rem;
+
+        .card-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
         }
-        .card-steps {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #fff;
-        }
+
         .card-fps {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+        }
+
+        /* Articles / Explanation */
+        .articles-section {
+            padding: 6rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
         }
 
         @media (max-width: 900px) {
-            .video-grid { grid-template-columns: 1fr; }
-            .compare-controls { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-            header h1 { font-size: 2.5rem; }
+            .articles-section { grid-template-columns: 1fr; }
         }
+
+        .article-card {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .article-card h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-card p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .article-card ul {
+            list-style-type: none;
+        }
+
+        .article-card li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+
+        .article-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .article-card strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container animate-stagger">
+    <div class="container">
         <header>
-            <div class="header-meta">
-                <span>Story Machine</span>
-                <span>// NVIDIA H100 80GB</span>
-                <span>// Latent Diffusion</span>
+            <span class="eyebrow">Visual Research</span>
+            <h1>Video <i>Limits</i></h1>
+            <p class="hero-desc">Evaluating the mathematical trade-off between framerate and visual fidelity in modern latent video diffusion pipelines. Computed on NVIDIA H100 80GB.</p>
+            
+            <div class="thesis-box">
+                <div class="thesis-title">Part of StoryMachine.ai</div>
+                <div class="thesis-text">
+                    This benchmark suite validates our core thesis around generative real-time storytelling. 
+                    Experience the complete multimodal system live at 
+                    <a href="https://storymachine.ai/stream" target="_blank">storymachine.ai/stream</a>, 
+                    where real-time video generation converges seamlessly with dynamic adaptive music and live voiceover.
+                </div>
             </div>
-            <h1>REAL-TIME<br>VIDEO LIMITS</h1>
-            <p>Evaluating the mathematical trade-off between framerate and visual fidelity in modern video diffusion pipelines. Every clip generated exactly 20.0s with forced cache-wipes for pure authenticity.</p>
         </header>
 
         <!-- Tool 01: Side by Side -->
-        <section class="compare-module">
-            <h2 class="section-title">Base Diffusion Output</h2>
-            
-            <div class="compare-controls">
-                <div style="max-width: 500px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">
-                    Select any two outputs to run synchronized playback. Observe how higher step counts force framerates down but maintain rigid prompt adherence and temporal consistency.
-                </div>
-                <button id="syncPlayBtn">Play Synchronized</button>
+        <section class="comparison-section">
+            <div class="controls-top">
+                <h2>Interactive Comparison</h2>
+                <button id="syncPlayBtn" class="play-sync">Play Synchronized</button>
             </div>
-
-            <div class="video-grid">
+            
+            <div class="compare-grid">
                 <!-- Video 1 -->
-                <div class="video-col">
+                <div class="compare-col">
                     <select id="videoSelect1" onchange="updateVideo('video1', this.value)">
                         <optgroup label="Helios-Distilled (Prompt A: Cyberpunk Detective)">
                             <option value="assets/benchmark_hardware_1_1_1_A.mp4">Helios - Prompt A - [1, 1, 1] Steps</option>
@@ -450,14 +438,14 @@
                     <div class="video-wrapper">
                         <video id="video1" src="assets/benchmark_hardware_2_2_2_A.mp4" controls muted playsinline></video>
                     </div>
-                    <div class="stats-display">
+                    <div class="stats-bar">
                         <span id="stats1_title">Helios High Quality</span>
-                        <span id="stats1_val">--</span>
+                        <span id="stats1_val" class="highlight">--</span>
                     </div>
                 </div>
 
                 <!-- Video 2 -->
-                <div class="video-col">
+                <div class="compare-col">
                     <select id="videoSelect2" onchange="updateVideo('video2', this.value)">
                         <optgroup label="Helios-Distilled (Prompt A: Cyberpunk Detective)">
                             <option value="assets/benchmark_hardware_1_1_1_A.mp4">Helios - Prompt A - [1, 1, 1] Steps</option>
@@ -495,67 +483,9 @@
                     <div class="video-wrapper">
                         <video id="video2" src="videos/clip_p0_res512x288_steps8.webm" controls muted playsinline></video>
                     </div>
-                    <div class="stats-display">
+                    <div class="stats-bar">
                         <span id="stats2_title">MemFlow [8 Steps]</span>
-                        <span id="stats2_val">22.1 FPS</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tool 02: RIFE Upscaling -->
-        <section class="compare-module rife-module">
-            <h2 class="section-title">RIFE Interpolation</h2>
-            
-            <div class="rife-explainer">
-                <strong>OVERRIDE: FRAME INTERPOLATION DETECTED.</strong><br>
-                Instead of forcing MemFlow to render every single frame, it generates a low-framerate base video (6-11 FPS). 
-                <strong>RIFE (Real-Time Intermediate Flow Estimation)</strong> intelligently hallucinates the "in-between" frames to artificially triple the framerate. 
-                This preserves compute for higher inference steps on the base frames while delivering smooth 30+ FPS playback.
-            </div>
-            
-            <div class="compare-controls">
-                <button id="syncPlayBtnRife">Play Synchronized</button>
-            </div>
-
-            <div class="video-grid">
-                <div class="video-col">
-                    <select id="videoSelectRife1" onchange="updateVideoRife('videoRife1', this.value)">
-                        <optgroup label="Prompt A: Cyberpunk Detective">
-                            <option value="videos/clip_p0_res512x288_steps4_norife.webm" selected>512x288 - Base Render</option>
-                            <option value="videos/clip_p0_res848x480_steps4_norife.webm">848x480 - Base Render</option>
-                        </optgroup>
-                        <optgroup label="Prompt B: Drone Metropolis">
-                            <option value="videos/clip_p1_res512x288_steps4_norife.webm">512x288 - Base Render</option>
-                            <option value="videos/clip_p1_res848x480_steps4_norife.webm">848x480 - Base Render</option>
-                        </optgroup>
-                    </select>
-                    <div class="video-wrapper">
-                        <video id="videoRife1" src="videos/clip_p0_res512x288_steps4_norife.webm" controls muted playsinline></video>
-                    </div>
-                    <div class="stats-display">
-                        <span id="statsRife1_title">RAW OUTPUT</span>
-                        <span id="statsRife1_val">11.0 FPS</span>
-                    </div>
-                </div>
-
-                <div class="video-col">
-                    <select id="videoSelectRife2" onchange="updateVideoRife('videoRife2', this.value)">
-                        <optgroup label="Prompt A: Cyberpunk Detective">
-                            <option value="videos/clip_p0_res512x288_steps4.webm" selected>512x288 - RIFE Applied</option>
-                            <option value="videos/clip_p0_res848x480_steps4.webm">848x480 - RIFE Applied</option>
-                        </optgroup>
-                        <optgroup label="Prompt B: Drone Metropolis">
-                            <option value="videos/clip_p1_res512x288_steps4.webm">512x288 - RIFE Applied</option>
-                            <option value="videos/clip_p1_res848x480_steps4.webm">848x480 - RIFE Applied</option>
-                        </optgroup>
-                    </select>
-                    <div class="video-wrapper">
-                        <video id="videoRife2" src="videos/clip_p0_res512x288_steps4.webm" controls muted playsinline></video>
-                    </div>
-                    <div class="stats-display">
-                        <span id="statsRife2_title">INTERPOLATED</span>
-                        <span id="statsRife2_val">36.7 FPS</span>
+                        <span id="stats2_val" class="highlight">22.1 FPS</span>
                     </div>
                 </div>
             </div>
@@ -563,63 +493,90 @@
 
         <!-- Matrix Archive -->
         <section class="matrix-section">
-            <h2 class="section-title">Matrix Archive</h2>
+            <h2>Complete Visual Archive</h2>
             
-            <div class="prompt-block">
-                <h3>01 / CYBERPUNK DETECTIVE</h3>
+            <div class="prompt-group">
                 <div class="prompt-desc">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
                 
                 <div class="res-group">
-                    <div class="res-header">MemFlow <span>512 x 288</span></div>
-                    <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">49.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">36.7 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">22.1 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.3 FPS</span></div></div>
+                    <div class="res-title">MemFlow 512 x 288</div>
+                    <div class="grid">
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">2 STEPS</span><span class="card-fps">49.3 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">4 STEPS</span><span class="card-fps">36.7 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">8 STEPS</span><span class="card-fps">22.1 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">12 STEPS</span><span class="card-fps">16.3 FPS</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
-                    <div class="res-header">MemFlow <span>848 x 480</span></div>
-                    <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.6 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.3 FPS</span></div></div>
+                    <div class="res-title">MemFlow 848 x 480</div>
+                    <div class="grid">
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">2 STEPS</span><span class="card-fps">28.3 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">4 STEPS</span><span class="card-fps">20.6 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">12 STEPS</span><span class="card-fps">9.3 FPS</span></div></div>
                     </div>
                 </div>
             </div>
 
-            <div class="prompt-block">
-                <h3>02 / DRONE METROPOLIS</h3>
+            <div class="prompt-group">
                 <div class="prompt-desc">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
                 
                 <div class="res-group">
-                    <div class="res-header">MemFlow <span>512 x 288</span></div>
-                    <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">47.2 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">34.8 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">23.0 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.7 FPS</span></div></div>
+                    <div class="res-title">MemFlow 512 x 288</div>
+                    <div class="grid">
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">2 STEPS</span><span class="card-fps">47.2 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">4 STEPS</span><span class="card-fps">34.8 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">8 STEPS</span><span class="card-fps">23.0 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">12 STEPS</span><span class="card-fps">16.7 FPS</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
-                    <div class="res-header">MemFlow <span>848 x 480</span></div>
-                    <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.7 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.5 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.4 FPS</span></div></div>
+                    <div class="res-title">MemFlow 848 x 480</div>
+                    <div class="grid">
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">2 STEPS</span><span class="card-fps">28.7 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">4 STEPS</span><span class="card-fps">20.5 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
+                        <div class="card"><div class="video-wrapper"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video></div><div class="card-meta"><span class="card-steps">12 STEPS</span><span class="card-fps">9.4 FPS</span></div></div>
                     </div>
                 </div>
             </div>
 
         </section>
+
+        <!-- Insights -->
+        <section class="articles-section">
+            <article class="article-card">
+                <h3>Frame Interpolation (RIFE)</h3>
+                <p>Generating every single frame through a heavy diffusion network takes massive compute. Modern real-time pipelines circumvent this by generating a low-framerate base video (e.g., 6-11 FPS) and applying <strong>RIFE</strong> (Real-Time Intermediate Flow Estimation).</p>
+                <p>RIFE intelligently hallucinates the "in-between" frames to artificially upscale the playback to a fluid 30+ FPS. This essential technique preserves critical GPU compute, allowing it to be spent running higher inference steps on the base frames for vastly improved visual coherence and prompt adherence.</p>
+            </article>
+
+            <article class="article-card">
+                <h3>Enhancement Techniques</h3>
+                <p>Beyond temporal interpolation, the Story Machine architecture employs multiple advanced strategies to elevate real-time fidelity:</p>
+                <ul>
+                    <li><strong>Spatial Upscaling (Real-ESRGAN, Topaz):</strong> Applied post-generation to boost per-frame resolution (e.g., upscaling 288p to 1080p) without taxing the core diffusion model's latent generation space.</li>
+                    <li><strong>Temporal Consistency (FlashVSR):</strong> Dedicated enhancer networks applied to sequences to reduce flickering and enforce geometric stability across moving elements over time.</li>
+                    <li><strong>Latent Caching (VACE):</strong> Enforcing continuous visual narrative by selectively bleeding latent noise from previous scenes into new generations to maintain the same subject and environment.</li>
+                </ul>
+            </article>
+
+            <article class="article-card" style="grid-column: 1 / -1;">
+                <h3>Plans for the Future</h3>
+                <p>Our roadmap for achieving zero-latency cinematic real-time generation includes massive architectural upgrades to the Helios foundation models:</p>
+                <ul>
+                    <li><strong>NVIDIA Blackwell (B200) Integration:</strong> Leveraging the 8 TB/s of HBM3e bandwidth and FlashAttention-4 to shatter current memory-bound diffusion limits.</li>
+                    <li><strong>3-Stage Asynchronous Pipeline:</strong> Splitting the workload across multiple GPUs using NVLink—GPU 0 handles raw Latent generation, while GPU 1 processes VAE decoding and RIFE asynchronously.</li>
+                    <li><strong>FP8/NVFP4 Quantization via LightX2V:</strong> Doubling matrix multiplication throughput and halving the VRAM footprint so we can run high-step generation at low-step speeds.</li>
+                    <li><strong>FlowGRPO Reinforcement Learning:</strong> Using GenRL to fine-tune the model with Motion Quality and Aesthetic rewards, allowing low-step renders to look structurally flawless.</li>
+                </ul>
+            </article>
+        </section>
     </div>
 
     <script>
-        // Data Store
         const videoData = {
             "benchmark_hardware_1_1_1_A.mp4": { title: "Helios [1,1,1]", fps: "Degraded" }, 
             "benchmark_hardware_2_2_2_A.mp4": { title: "Helios [2,2,2]", fps: "Stuttering" }, 
@@ -649,18 +606,6 @@
             "clip_p1_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.4 FPS" }
         };
 
-        const rifeStats = {
-            "clip_p0_res512x288_steps4_norife.webm": { title: "RAW OUTPUT", fps: "11.0 FPS" },
-            "clip_p0_res848x480_steps4_norife.webm": { title: "RAW OUTPUT", fps: "6.3 FPS" },
-            "clip_p1_res512x288_steps4_norife.webm": { title: "RAW OUTPUT", fps: "20.4 FPS" },
-            "clip_p1_res848x480_steps4_norife.webm": { title: "RAW OUTPUT", fps: "11.4 FPS" },
-            "clip_p0_res512x288_steps4.webm": { title: "INTERPOLATED", fps: "36.7 FPS" },
-            "clip_p0_res848x480_steps4.webm": { title: "INTERPOLATED", fps: "20.6 FPS" },
-            "clip_p1_res512x288_steps4.webm": { title: "INTERPOLATED", fps: "34.8 FPS" },
-            "clip_p1_res848x480_steps4.webm": { title: "INTERPOLATED", fps: "20.5 FPS" },
-        };
-
-        // Update handlers
         function updateVideo(id, src) {
             const vid = document.getElementById(id);
             vid.src = src;
@@ -674,30 +619,9 @@
             document.getElementById(`stats${num}_val`).innerText = data.fps;
         }
 
-        function updateVideoRife(id, src) {
-            const vid = document.getElementById(id);
-            vid.src = src;
-            vid.load();
-            
-            const filename = src.split('/').pop();
-            const data = rifeStats[filename] || { title: "Unknown", fps: "--" };
-            
-            const num = id.replace('videoRife', '');
-            document.getElementById(`statsRife${num}_title`).innerText = data.title;
-            document.getElementById(`statsRife${num}_val`).innerText = data.fps;
-        }
-
-        // Sync playback logic
         document.getElementById('syncPlayBtn').addEventListener('click', () => {
             const v1 = document.getElementById('video1');
             const v2 = document.getElementById('video2');
-            v1.currentTime = 0; v2.currentTime = 0;
-            v1.play(); v2.play();
-        });
-
-        document.getElementById('syncPlayBtnRife').addEventListener('click', () => {
-            const v1 = document.getElementById('videoRife1');
-            const v2 = document.getElementById('videoRife2');
             v1.currentTime = 0; v2.currentTime = 0;
             v1.play(); v2.play();
         });
