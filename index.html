@@ -323,6 +323,7 @@
             background: var(--surface);
             padding: 2rem;
             border: 1px solid var(--surface-border);
+            display: flow-root;
         }
         .res-header {
             font-family: var(--font-display);
@@ -343,15 +344,22 @@
         }
 
         .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 1.5rem;
+            justify-content: center;
+            width: 100%;
         }
         
         .card {
             background: var(--bg);
             border: 1px solid var(--surface-border);
             transition: transform 0.3s ease, border-color 0.3s ease;
+            width: 300px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-5px);
