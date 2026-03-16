@@ -503,63 +503,7 @@
             </div>
         </section>
 
-        <!-- Tool 02: RIFE Upscaling -->
-        <section class="compare-module rife-module">
-            <h2 class="section-title">RIFE Interpolation</h2>
-            
-            <div class="rife-explainer">
-                <strong>OVERRIDE: FRAME INTERPOLATION DETECTED.</strong><br>
-                Instead of forcing MemFlow to render every single frame, it generates a low-framerate base video (6-11 FPS). 
-                <strong>RIFE (Real-Time Intermediate Flow Estimation)</strong> intelligently hallucinates the "in-between" frames to artificially triple the framerate. 
-                This preserves compute for higher inference steps on the base frames while delivering smooth 30+ FPS playback.
-            </div>
-            
-            <div class="compare-controls">
-                <button id="syncPlayBtnRife">Play Synchronized</button>
-            </div>
-
-            <div class="video-grid">
-                <div class="video-col">
-                    <select id="videoSelectRife1" onchange="updateVideoRife('videoRife1', this.value)">
-                        <optgroup label="Prompt A: Cyberpunk Detective">
-                            <option value="videos/clip_p0_res512x288_steps4_norife.webm" selected>512x288 - Base Render</option>
-                            <option value="videos/clip_p0_res848x480_steps4_norife.webm">848x480 - Base Render</option>
-                        </optgroup>
-                        <optgroup label="Prompt B: Drone Metropolis">
-                            <option value="videos/clip_p1_res512x288_steps4_norife.webm">512x288 - Base Render</option>
-                            <option value="videos/clip_p1_res848x480_steps4_norife.webm">848x480 - Base Render</option>
-                        </optgroup>
-                    </select>
-                    <div class="video-wrapper">
-                        <video id="videoRife1" src="videos/clip_p0_res512x288_steps4_norife.webm" controls muted playsinline></video>
-                    </div>
-                    <div class="stats-display">
-                        <span id="statsRife1_title">RAW OUTPUT</span>
-                        <span id="statsRife1_val">11.0 FPS</span>
-                    </div>
-                </div>
-
-                <div class="video-col">
-                    <select id="videoSelectRife2" onchange="updateVideoRife('videoRife2', this.value)">
-                        <optgroup label="Prompt A: Cyberpunk Detective">
-                            <option value="videos/clip_p0_res512x288_steps4.webm" selected>512x288 - RIFE Applied</option>
-                            <option value="videos/clip_p0_res848x480_steps4.webm">848x480 - RIFE Applied</option>
-                        </optgroup>
-                        <optgroup label="Prompt B: Drone Metropolis">
-                            <option value="videos/clip_p1_res512x288_steps4.webm">512x288 - RIFE Applied</option>
-                            <option value="videos/clip_p1_res848x480_steps4.webm">848x480 - RIFE Applied</option>
-                        </optgroup>
-                    </select>
-                    <div class="video-wrapper">
-                        <video id="videoRife2" src="videos/clip_p0_res512x288_steps4.webm" controls muted playsinline></video>
-                    </div>
-                    <div class="stats-display">
-                        <span id="statsRife2_title">INTERPOLATED</span>
-                        <span id="statsRife2_val">36.7 FPS</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
         <!-- Matrix Archive -->
         <section class="matrix-section">
@@ -571,20 +515,26 @@
                 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>512 x 288</span></div>
-                    <div class="cards-grid">
+                                        <div class="cards-grid">
                         <div class="card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">49.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">38.9 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">36.7 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">27.5 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">22.1 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">18.8 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.3 FPS</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>848 x 480</span></div>
-                    <div class="cards-grid">
+                                        <div class="cards-grid">
                         <div class="card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">24.3 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.6 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.5 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.3 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.3 FPS</span></div></div>
                     </div>
                 </div>
@@ -596,26 +546,63 @@
                 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>512 x 288</span></div>
-                    <div class="cards-grid">
+                                        <div class="cards-grid">
                         <div class="card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">47.2 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">40.5 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">34.8 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">27.1 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">23.0 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">19.3 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.7 FPS</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>848 x 480</span></div>
-                    <div class="cards-grid">
+                                        <div class="cards-grid">
                         <div class="card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.7 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">23.9 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.5 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.4 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.1 FPS</span></div></div>
                         <div class="card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.4 FPS</span></div></div>
                     </div>
                 </div>
             </div>
 
         </section>
+
+
+        <hr style="border-color: #333; margin-top: 40px; margin-bottom: 40px;">
+        <h2 class="section-title">Further Enhancements & Future Plans</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 60px;">
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">Frame Interpolation (RIFE)</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Generating every single frame through a heavy diffusion network takes massive compute. Modern real-time pipelines circumvent this by generating a low-framerate base video (e.g., 6-11 FPS) and applying <strong>RIFE</strong> (Real-Time Intermediate Flow Estimation).</p>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">RIFE intelligently hallucinates the "in-between" frames to artificially upscale the playback to a fluid 30+ FPS. This essential technique preserves critical GPU compute, allowing it to be spent running higher inference steps on the base frames for vastly improved visual coherence and prompt adherence.</p>
+            </div>
+
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">Enhancement Techniques</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Beyond temporal interpolation, the Story Machine architecture employs multiple advanced strategies to elevate real-time fidelity:</p>
+                <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px;">
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Spatial Upscaling (Real-ESRGAN, Topaz):</strong> Applied post-generation to boost per-frame resolution (e.g., upscaling 288p to 1080p) without taxing the core diffusion model's latent generation space.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Temporal Consistency (FlashVSR):</strong> Dedicated enhancer networks applied to sequences to reduce flickering and enforce geometric stability across moving elements over time.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Latent Caching (VACE):</strong> Enforcing continuous visual narrative by selectively bleeding latent noise from previous scenes into new generations to maintain the same subject and environment.</li>
+                </ul>
+            </div>
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">Plans for the Future</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Our roadmap for achieving zero-latency cinematic real-time generation includes massive architectural upgrades to the Helios foundation models:</p>
+                <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px;">
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">NVIDIA Blackwell (B200) Integration:</strong> Leveraging the 8 TB/s of HBM3e bandwidth and FlashAttention-4 to shatter current memory-bound diffusion limits.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">3-Stage Asynchronous Pipeline:</strong> Splitting the workload across multiple GPUs using NVLink—GPU 0 handles raw Latent generation, while GPU 1 processes VAE decoding and RIFE asynchronously.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">FP8/NVFP4 Quantization via LightX2V:</strong> Doubling matrix multiplication throughput and halving the VRAM footprint so we can run high-step generation at low-step speeds.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">FlowGRPO Reinforcement Learning:</strong> Using GenRL to fine-tune the model with Motion Quality and Aesthetic rewards, allowing low-step renders to look structurally flawless.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -649,16 +636,7 @@
             "clip_p1_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.4 FPS" }
         };
 
-        const rifeStats = {
-            "clip_p0_res512x288_steps4_norife.webm": { title: "RAW OUTPUT", fps: "11.0 FPS" },
-            "clip_p0_res848x480_steps4_norife.webm": { title: "RAW OUTPUT", fps: "6.3 FPS" },
-            "clip_p1_res512x288_steps4_norife.webm": { title: "RAW OUTPUT", fps: "20.4 FPS" },
-            "clip_p1_res848x480_steps4_norife.webm": { title: "RAW OUTPUT", fps: "11.4 FPS" },
-            "clip_p0_res512x288_steps4.webm": { title: "INTERPOLATED", fps: "36.7 FPS" },
-            "clip_p0_res848x480_steps4.webm": { title: "INTERPOLATED", fps: "20.6 FPS" },
-            "clip_p1_res512x288_steps4.webm": { title: "INTERPOLATED", fps: "34.8 FPS" },
-            "clip_p1_res848x480_steps4.webm": { title: "INTERPOLATED", fps: "20.5 FPS" },
-        };
+        
 
         // Update handlers
         function updateVideo(id, src) {
@@ -674,19 +652,6 @@
             document.getElementById(`stats${num}_val`).innerText = data.fps;
         }
 
-        function updateVideoRife(id, src) {
-            const vid = document.getElementById(id);
-            vid.src = src;
-            vid.load();
-            
-            const filename = src.split('/').pop();
-            const data = rifeStats[filename] || { title: "Unknown", fps: "--" };
-            
-            const num = id.replace('videoRife', '');
-            document.getElementById(`statsRife${num}_title`).innerText = data.title;
-            document.getElementById(`statsRife${num}_val`).innerText = data.fps;
-        }
-
         // Sync playback logic
         document.getElementById('syncPlayBtn').addEventListener('click', () => {
             const v1 = document.getElementById('video1');
@@ -695,12 +660,7 @@
             v1.play(); v2.play();
         });
 
-        document.getElementById('syncPlayBtnRife').addEventListener('click', () => {
-            const v1 = document.getElementById('videoRife1');
-            const v2 = document.getElementById('videoRife2');
-            v1.currentTime = 0; v2.currentTime = 0;
-            v1.play(); v2.play();
-        });
+        
     </script>
 </body>
 </html>
