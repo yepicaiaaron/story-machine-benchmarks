@@ -1,94 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Story Machine Benchmarks - Helios Model Comparison</title>
+    <title>Story Machine Benchmarks</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: #fff; padding: 20px; line-height: 1.6; max-width: 1200px; margin: auto; }
-        h1, h2, h3 { text-align: center; color: #4ade80; }
-        .section { background: #1a1a2e; padding: 30px; border-radius: 8px; margin-bottom: 40px; border: 1px solid #2a2a4e; }
-        .text-content { max-width: 900px; margin: auto; }
+        body { font-family: sans-serif; background: #121212; color: #fff; padding: 20px; }
+        h1, h2, h3 { text-align: center; }
         .prompt-container { margin-bottom: 40px; padding: 20px; background: #1e1e1e; border-radius: 8px; }
         .prompt-text { font-size: 1.1em; color: #aaa; text-align: center; margin-bottom: 20px; font-style: italic; }
-        .grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
-        .video-card { background: #000; padding: 15px; border-radius: 6px; width: 45%; min-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        video { width: 100%; border-radius: 4px; outline: none; background: #222; aspect-ratio: 16/9; }
-        .steps-label { margin-top: 10px; font-weight: bold; font-size: 1.2em; color: #fff; }
-        .stats-label { margin-top: 5px; font-size: 1em; color: #4ade80; }
-        code { background: #333; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-        ul { margin-top: 0; }
-        li { margin-bottom: 10px; }
+        .resolution-row { display: flex; flex-direction: column; margin-bottom: 30px; }
+        .resolution-header { font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; color: #4ade80; }
+        .grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .video-card { background: #000; padding: 10px; border-radius: 6px; width: 400px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        video { width: 100%; border-radius: 4px; outline: none; background: #222; }
+        .steps-label { margin-top: 10px; font-weight: bold; font-size: 1.1em; }
+        
+        .compare-section { background: #1a1a2e; padding: 30px; border-radius: 8px; margin-bottom: 40px; text-align: center; border: 1px solid #2a2a4e; }
+        .compare-grid { display: flex; justify-content: center; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+        .compare-col { display: flex; flex-direction: column; align-items: center; width: 45%; min-width: 300px; }
+        .compare-col video { width: 100%; max-width: 848px; aspect-ratio: 16/9; }
+        .controls { margin-top: 20px; margin-bottom: 20px; }
+        select { padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px; font-size: 1em; width: 100%; max-width: 500px; margin-bottom: 15px; }
+        button { padding: 12px 30px; font-size: 1.2em; background: #4ade80; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        button:hover { background: #22c55e; }
+    
+        .stats-label { margin-top: 5px; font-size: 0.9em; color: #aaa; }
+        .compare-stats { margin-top: 10px; font-size: 1.1em; color: #4ade80; }
+
+        .details-section { max-width: 900px; margin: 0 auto 40px auto; background: #1a1a2e; padding: 20px 30px; border-radius: 8px; border: 1px solid #2a2a4e; line-height: 1.6; }
+        .details-section a { color: #4ade80; }
     </style>
 </head>
 <body>
-    <h1>Story Machine Benchmarks</h1>
-    <h2 style="color: #fff;">Helios Real-Time Long Video Generation: Quality vs Speed</h2>
-    
-    <div class="section text-content">
-        <h3>The Model: Helios-Distilled</h3>
-        <p>All tests in this benchmark matrix were performed using the <strong>Helios-Distilled</strong> model (<code>BestWishYsh/Helios-Distilled</code>), developed by the PKU-YuanGroup. Helios is an advanced DiT (Diffusion Transformer) video generation architecture. The "Distilled" version has been optimized for faster inference.</p>
-        
-        <h3>The Benchmark Matrix</h3>
-        <p>These videos demonstrate the direct trade-off between visual fidelity and real-time generation speed. We ran the model under two distinct configurations on a single <strong>NVIDIA H100 80GB HBM3</strong> GPU using the same cinematic prompts:</p>
-        <ul>
-            <li><strong><code>[2, 2, 2]</code> Inference Steps (High Quality):</strong> The default configuration intended for maximum visual quality. Highly detailed, but the rendering overhead introduces significant stuttering.</li>
-            <li><strong><code>[1, 1, 1]</code> Inference Steps (High Speed):</strong> The speed-test configuration used to achieve higher framerates (e.g., 19.5+ FPS). Dropping steps this low fundamentally degrades the visual structure.</li>
-        </ul>
-        <p><em>Note: The videos below represent the raw, pure hardware throughput without any UI or network latency. The FPS overlays were baked in by the hardware rendering script itself.</em></p>
+    <h1>Story Machine Benchmarks (Helios-Distilled)</h1>
+    <p style="text-align: center;">Side-by-side comparison of rendering quality vs compute steps on NVIDIA H100.</p>
+
+    <div class="details-section">
+        <h2>About This Benchmark</h2>
+        <p>For extensive details about the Helios-Distilled model, the testing methodology, and our findings on real-world throughput vs paper claims, please refer to the extensive details in the <a href="https://github.com/yepicaiaaron/story-machine-benchmarks/blob/master/README.md" target="_blank">repository README</a>.</p>
     </div>
 
+    <!-- SIDE-BY-SIDE COMPARISON TOOL -->
+    <div class="compare-section">
+        <h2>Interactive Side-by-Side Comparison</h2>
+        <p style="color: #aaa; margin-bottom: 20px;">Select two videos to compare and hit Play.</p>
+        
+        <div class="controls">
+            <button id="syncPlayBtn">▶ Play Both Synchronized</button>
+        </div>
+
+        <div class="compare-grid">
+            <div class="compare-col">
+                <select id="videoSelect1" onchange="updateVideo('video1', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective">
+                        <option value="assets/benchmark_hardware_1_1_1_A.mp4">[1, 1, 1] Steps (High Speed)</option>
+                        <option value="assets/benchmark_hardware_2_2_2_A.mp4" selected>[2, 2, 2] Steps (High Quality)</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis">
+                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">[1, 1, 1] Steps (High Speed)</option>
+                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    </optgroup>
+                </select>
+                <video id="video1" src="assets/benchmark_hardware_2_2_2_A.mp4" controls muted playsinline></video>
+                <div id="stats1" class="compare-stats">High Quality (Stuttering)</div>
+            </div>
+
+            <div class="compare-col">
+                <select id="videoSelect2" onchange="updateVideo('video2', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective">
+                        <option value="assets/benchmark_hardware_1_1_1_A.mp4" selected>[1, 1, 1] Steps (High Speed)</option>
+                        <option value="assets/benchmark_hardware_2_2_2_A.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis">
+                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">[1, 1, 1] Steps (High Speed)</option>
+                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    </optgroup>
+                </select>
+                <video id="video2" src="assets/benchmark_hardware_1_1_1_A.mp4" controls muted playsinline></video>
+                <div id="stats2" class="compare-stats">High Speed (Degraded)</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoStats = {
+            "benchmark_hardware_1_1_1_A.mp4": "High Speed (Degraded Quality)", 
+            "benchmark_hardware_2_2_2_A.mp4": "High Quality (Stuttering Playback)", 
+            "benchmark_hardware_1_1_1_B.mp4": "High Speed (Degraded Quality)", 
+            "benchmark_hardware_2_2_2_B.mp4": "High Quality (Stuttering Playback)"
+        };
+
+        function updateVideo(videoId, src) {
+            const vid = document.getElementById(videoId);
+            vid.src = src;
+            vid.load();
+            const filename = src.split('/').pop();
+            const statsDivId = videoId === 'video1' ? 'stats1' : 'stats2';
+            const statsText = videoStats[filename] || 'Unknown Stats';
+            document.getElementById(statsDivId).innerText = `${statsText}`;
+        }
+
+        document.getElementById('syncPlayBtn').addEventListener('click', function() {
+            const v1 = document.getElementById('video1');
+            const v2 = document.getElementById('video2');
+            
+            v1.currentTime = 0;
+            v2.currentTime = 0;
+            
+            v1.play();
+            v2.play();
+        });
+    </script>
+
+    <hr style="border-color: #333; margin-bottom: 40px;">
+
+    <!-- ALL CLIPS GRID -->
+    <h2 style="color: #666; margin-bottom: 30px;">All Generated Clips Matrix</h2>
+    
     <!-- PROMPT A -->
     <div class="prompt-container">
-        <h3 style="color: #fff;">Prompt A: The Cyberpunk Detective</h3>
+        <h3>Prompt A: Cyberpunk Detective</h3>
         <div class="prompt-text">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
         
-        <div class="grid">
-            <div class="video-card">
-                <video src="assets/benchmark_hardware_2_2_2_A.mp4" controls muted loop playsinline></video>
-                <div class="steps-label">[2, 2, 2] Steps (High Quality)</div>
-                <div class="stats-label">Stuttering playback, sharp details</div>
-            </div>
-            <div class="video-card">
-                <video src="assets/benchmark_hardware_1_1_1_A.mp4" controls muted loop playsinline></video>
-                <div class="steps-label">[1, 1, 1] Steps (High Speed)</div>
-                <div class="stats-label">Smoother playback, heavily degraded visuals</div>
+        <div class="resolution-row">
+            <div class="grid">
+                <div class="video-card">
+                    <video src="assets/benchmark_hardware_1_1_1_A.mp4" controls loop preload="none"></video>
+                    <div class="steps-label">[1, 1, 1] Steps</div>
+                    <div class="stats-label">High Speed (Degraded)</div>
+                </div>
+                <div class="video-card">
+                    <video src="assets/benchmark_hardware_2_2_2_A.mp4" controls loop preload="none"></video>
+                    <div class="steps-label">[2, 2, 2] Steps</div>
+                    <div class="stats-label">High Quality (Stuttering)</div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- PROMPT B -->
     <div class="prompt-container">
-        <h3 style="color: #fff;">Prompt B: Drone Shot Metropolis</h3>
+        <h3>Prompt B: Drone Shot Metropolis</h3>
         <div class="prompt-text">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
         
-        <div class="grid">
-            <div class="video-card">
-                <video src="assets/benchmark_hardware_2_2_2_B.mp4" controls muted loop playsinline></video>
-                <div class="steps-label">[2, 2, 2] Steps (High Quality)</div>
-                <div class="stats-label">Stuttering playback, sharp details</div>
-            </div>
-            <div class="video-card">
-                <video src="assets/benchmark_hardware_1_1_1_B.mp4" controls muted loop playsinline></video>
-                <div class="steps-label">[1, 1, 1] Steps (High Speed)</div>
-                <div class="stats-label">Smoother playback, heavily degraded visuals</div>
+        <div class="resolution-row">
+            <div class="grid">
+                <div class="video-card">
+                    <video src="assets/benchmark_hardware_1_1_1_B.mp4" controls loop preload="none"></video>
+                    <div class="steps-label">[1, 1, 1] Steps</div>
+                    <div class="stats-label">High Speed (Degraded)</div>
+                </div>
+                <div class="video-card">
+                    <video src="assets/benchmark_hardware_2_2_2_B.mp4" controls loop preload="none"></video>
+                    <div class="steps-label">[2, 2, 2] Steps</div>
+                    <div class="stats-label">High Quality (Stuttering)</div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="section text-content">
-        <h3>Why Real-World FPS Differs from Paper Claims</h3>
-        <p>Based on our analysis and testing of the Helios architecture, here is why the reported numbers in the research paper (1.58s / ~20.8 FPS) are faster than our pure PyTorch readout (~2.39s / ~13.8 FPS) on the exact same H100 hardware:</p>
-        <ol>
-            <li><strong>They benchmarked pure T2V (Text-to-Video), not I2V streaming:</strong> Their benchmark measures just the raw transformer generating latents from text. Our pipeline is running a continuous autoregressive stream where it has to pass the previous chunk's frames back into the model as an Image-to-Video (I2V) conditioning step to maintain consistency across chunks. That extra conditioning pass adds significant overhead.</li>
-            <li><strong>They didn't include VAE decoding overhead:</strong> Their 19.5+ FPS benchmark only timed the latent generation. In our streaming pipeline, we are physically decoding those latents back into full 720p RGB pixels on the GPU so that we can actually see and stream them. The VAE decode step for 33 frames of 720p video is mathematically heavy.</li>
-            <li><strong>We are running Stage 2 (Upscaling/Refinement):</strong> In our <code>stream_helios_generator_authentic.py</code> script, we have <code>is_enable_stage2=True</code>. They likely disabled the second stage of the generation pipeline for their raw speed-test benchmark to hit that sub-1.6s number.</li>
-            <li><strong>Python I/O and Conversion Overhead:</strong> Our script isn't just generating the tensor; it's converting the <code>bfloat16</code> PyTorch tensor to <code>float32</code>, pulling it from GPU VRAM to CPU RAM (<code>.cpu().numpy()</code>), and reshaping/scaling the array so we can feed it into LiveKit or <code>ffmpeg</code>. Moving a 33-frame 720p uncompressed tensor from GPU to CPU takes non-trivial millisecond time.</li>
-        </ol>
-        <p><strong>Essentially, they benchmarked the absolute bare-minimum matrix multiplication inside the Transformer. We are benchmarking the actual, usable pipeline that produces pixels you can look at.</strong></p>
-        
-        <h3 style="margin-top: 40px;">Replicating the Results</h3>
-        <p>The tests were run natively on an NVIDIA H100 80GB HBM3 GPU. To bypass browser WebRTC limitations and capture the authentic hardware throughput, we built a Python script that intercepts the raw PyTorch frames and dynamically encodes them directly to an MP4 using <code>ffmpeg</code>, correctly duplicating frames to perfectly match the true generation delay.</p>
-        <p>The native Python-to-ffmpeg compiler script (<code>stream_helios_generator_authentic.py</code>) used to generate these videos is included in the GitHub repository.</p>
-    </div>
-
 </body>
 </html>
