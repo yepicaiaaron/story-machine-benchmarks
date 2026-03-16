@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Story Machine Benchmarks</title>
+    <title>Real-Time Video Generation Benchmarks</title>
     <style>
         body { font-family: sans-serif; background: #121212; color: #fff; padding: 20px; }
         h1, h2, h3 { text-align: center; }
@@ -26,23 +26,23 @@
         .stats-label { margin-top: 5px; font-size: 0.9em; color: #aaa; }
         .compare-stats { margin-top: 10px; font-size: 1.1em; color: #4ade80; }
 
-        .details-section { max-width: 900px; margin: 0 auto 40px auto; background: #1a1a2e; padding: 20px 30px; border-radius: 8px; border: 1px solid #2a2a4e; line-height: 1.6; }
+        .details-section { max-width: 900px; margin: 0 auto 40px auto; background: #1a1a2e; padding: 20px 30px; border-radius: 8px; border: 1px solid #2a2a4e; line-height: 1.6; text-align: center; }
         .details-section a { color: #4ade80; }
     </style>
 </head>
 <body>
-    <h1>Story Machine Benchmarks (Helios-Distilled)</h1>
-    <p style="text-align: center;">Side-by-side comparison of rendering quality vs compute steps on NVIDIA H100.</p>
+    <h1>Real-Time Video Generation Benchmarks</h1>
+    <p style="text-align: center; color: #aaa; max-width: 800px; margin: 0 auto 30px auto;">Welcome to the ongoing Real-Time Video Comparison Project. Here we compare state-of-the-art models side-by-side across various inference steps to determine the true trade-off between visual fidelity and real-time generation speed on high-end hardware like the NVIDIA H100. We will continuously add new models as they are released.</p>
 
     <div class="details-section">
         <h2>About This Benchmark</h2>
-        <p>For extensive details about the Helios-Distilled model, the testing methodology, and our findings on real-world throughput vs paper claims, please refer to the extensive details in the <a href="https://github.com/yepicaiaaron/story-machine-benchmarks/blob/master/README.md" target="_blank">repository README</a>.</p>
+        <p>For extensive details about the <strong>MemFlow</strong> and <strong>Helios-Distilled</strong> models, the testing methodology, and our findings on real-world throughput vs paper claims, please refer to the extensive details in the <a href="https://github.com/yepicaiaaron/story-machine-benchmarks/blob/master/README.md" target="_blank">repository README</a>.</p>
     </div>
 
     <!-- SIDE-BY-SIDE COMPARISON TOOL -->
     <div class="compare-section">
         <h2>Interactive Side-by-Side Comparison</h2>
-        <p style="color: #aaa; margin-bottom: 20px;">Select two videos to compare and hit Play.</p>
+        <p style="color: #aaa; margin-bottom: 20px;">Select any two videos from any model to compare and hit Play.</p>
         
         <div class="controls">
             <button id="syncPlayBtn">▶ Play Both Synchronized</button>
@@ -51,42 +51,88 @@
         <div class="compare-grid">
             <div class="compare-col">
                 <select id="videoSelect1" onchange="updateVideo('video1', this.value)">
-                    <optgroup label="Prompt A: Cyberpunk Detective">
-                        <option value="assets/benchmark_hardware_1_1_1_A.mp4">[1, 1, 1] Steps (High Speed)</option>
-                        <option value="assets/benchmark_hardware_2_2_2_A.mp4" selected>[2, 2, 2] Steps (High Quality)</option>
+                    <optgroup label="Helios-Distilled (Prompt A: Cyberpunk Detective)">
+                        <option value="assets/benchmark_hardware_1_1_1_A.mp4">Helios - Prompt A - [1, 1, 1] Steps</option>
+                        <option value="assets/benchmark_hardware_2_2_2_A.mp4" selected>Helios - Prompt A - [2, 2, 2] Steps</option>
                     </optgroup>
-                    <optgroup label="Prompt B: Drone Metropolis">
-                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">[1, 1, 1] Steps (High Speed)</option>
-                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    <optgroup label="Helios-Distilled (Prompt B: Drone Metropolis)">
+                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">Helios - Prompt B - [1, 1, 1] Steps</option>
+                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">Helios - Prompt B - [2, 2, 2] Steps</option>
+                    </optgroup>
+                    <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 512x288)">
+                        <option value="videos/clip_p0_res512x288_steps2.webm">MemFlow - Prompt A - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps4.webm">MemFlow - Prompt A - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps8.webm">MemFlow - Prompt A - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps12.webm">MemFlow - Prompt A - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="MemFlow (Prompt B: Drone Metropolis 512x288)">
+                        <option value="videos/clip_p1_res512x288_steps2.webm">MemFlow - Prompt B - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps4.webm">MemFlow - Prompt B - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps8.webm">MemFlow - Prompt B - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps12.webm">MemFlow - Prompt B - 512x288 - 12 Steps</option>
                     </optgroup>
                 </select>
                 <video id="video1" src="assets/benchmark_hardware_2_2_2_A.mp4" controls muted playsinline></video>
-                <div id="stats1" class="compare-stats">High Quality (Stuttering)</div>
+                <div id="stats1" class="compare-stats">Helios High Quality</div>
             </div>
 
             <div class="compare-col">
                 <select id="videoSelect2" onchange="updateVideo('video2', this.value)">
-                    <optgroup label="Prompt A: Cyberpunk Detective">
-                        <option value="assets/benchmark_hardware_1_1_1_A.mp4" selected>[1, 1, 1] Steps (High Speed)</option>
-                        <option value="assets/benchmark_hardware_2_2_2_A.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    <optgroup label="Helios-Distilled (Prompt A: Cyberpunk Detective)">
+                        <option value="assets/benchmark_hardware_1_1_1_A.mp4">Helios - Prompt A - [1, 1, 1] Steps</option>
+                        <option value="assets/benchmark_hardware_2_2_2_A.mp4">Helios - Prompt A - [2, 2, 2] Steps</option>
                     </optgroup>
-                    <optgroup label="Prompt B: Drone Metropolis">
-                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">[1, 1, 1] Steps (High Speed)</option>
-                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">[2, 2, 2] Steps (High Quality)</option>
+                    <optgroup label="Helios-Distilled (Prompt B: Drone Metropolis)">
+                        <option value="assets/benchmark_hardware_1_1_1_B.mp4">Helios - Prompt B - [1, 1, 1] Steps</option>
+                        <option value="assets/benchmark_hardware_2_2_2_B.mp4">Helios - Prompt B - [2, 2, 2] Steps</option>
+                    </optgroup>
+                    <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 512x288)">
+                        <option value="videos/clip_p0_res512x288_steps2.webm">MemFlow - Prompt A - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps4.webm">MemFlow - Prompt A - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps8.webm" selected>MemFlow - Prompt A - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps12.webm">MemFlow - Prompt A - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="MemFlow (Prompt B: Drone Metropolis 512x288)">
+                        <option value="videos/clip_p1_res512x288_steps2.webm">MemFlow - Prompt B - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps4.webm">MemFlow - Prompt B - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps8.webm">MemFlow - Prompt B - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps12.webm">MemFlow - Prompt B - 512x288 - 12 Steps</option>
                     </optgroup>
                 </select>
-                <video id="video2" src="assets/benchmark_hardware_1_1_1_A.mp4" controls muted playsinline></video>
-                <div id="stats2" class="compare-stats">High Speed (Degraded)</div>
+                <video id="video2" src="videos/clip_p0_res512x288_steps8.webm" controls muted playsinline></video>
+                <div id="stats2" class="compare-stats">MemFlow Rendered in 20.0s @ 22.1 FPS</div>
             </div>
         </div>
     </div>
 
     <script>
         const videoStats = {
-            "benchmark_hardware_1_1_1_A.mp4": "High Speed (Degraded Quality)", 
-            "benchmark_hardware_2_2_2_A.mp4": "High Quality (Stuttering Playback)", 
-            "benchmark_hardware_1_1_1_B.mp4": "High Speed (Degraded Quality)", 
-            "benchmark_hardware_2_2_2_B.mp4": "High Quality (Stuttering Playback)"
+            "benchmark_hardware_1_1_1_A.mp4": "Helios High Speed (Degraded Quality)", 
+            "benchmark_hardware_2_2_2_A.mp4": "Helios High Quality (Stuttering Playback)", 
+            "benchmark_hardware_1_1_1_B.mp4": "Helios High Speed (Degraded Quality)", 
+            "benchmark_hardware_2_2_2_B.mp4": "Helios High Quality (Stuttering Playback)",
+            "clip_p0_res512x288_steps2.webm": "MemFlow 20.0s @ 49.3 FPS", 
+            "clip_p0_res512x288_steps3.webm": "MemFlow 20.0s @ 38.9 FPS", 
+            "clip_p0_res512x288_steps4.webm": "MemFlow 20.0s @ 36.7 FPS", 
+            "clip_p0_res512x288_steps6.webm": "MemFlow 20.0s @ 27.5 FPS", 
+            "clip_p0_res512x288_steps8.webm": "MemFlow 20.0s @ 22.1 FPS", 
+            "clip_p0_res512x288_steps10.webm": "MemFlow 20.0s @ 18.8 FPS", 
+            "clip_p0_res512x288_steps12.webm": "MemFlow 20.0s @ 16.3 FPS",
+            "clip_p1_res512x288_steps2.webm": "MemFlow 20.0s @ 47.2 FPS", 
+            "clip_p1_res512x288_steps3.webm": "MemFlow 20.0s @ 40.5 FPS", 
+            "clip_p1_res512x288_steps4.webm": "MemFlow 20.0s @ 34.8 FPS", 
+            "clip_p1_res512x288_steps6.webm": "MemFlow 20.0s @ 27.1 FPS", 
+            "clip_p1_res512x288_steps8.webm": "MemFlow 20.0s @ 23.0 FPS", 
+            "clip_p1_res512x288_steps10.webm": "MemFlow 20.0s @ 19.3 FPS", 
+            "clip_p1_res512x288_steps12.webm": "MemFlow 20.0s @ 16.7 FPS",
+            "clip_p0_res848x480_steps2.webm": "MemFlow 20.0s @ 28.3 FPS",
+            "clip_p0_res848x480_steps4.webm": "MemFlow 20.0s @ 20.6 FPS",
+            "clip_p0_res848x480_steps8.webm": "MemFlow 20.0s @ 13.3 FPS",
+            "clip_p0_res848x480_steps12.webm": "MemFlow 20.0s @ 9.3 FPS",
+            "clip_p1_res848x480_steps2.webm": "MemFlow 20.0s @ 28.7 FPS",
+            "clip_p1_res848x480_steps4.webm": "MemFlow 20.0s @ 20.5 FPS",
+            "clip_p1_res848x480_steps8.webm": "MemFlow 20.0s @ 13.3 FPS",
+            "clip_p1_res848x480_steps12.webm": "MemFlow 20.0s @ 9.4 FPS"
         };
 
         function updateVideo(videoId, src) {
@@ -116,46 +162,93 @@
     <!-- ALL CLIPS GRID -->
     <h2 style="color: #666; margin-bottom: 30px;">All Generated Clips Matrix</h2>
     
-    <!-- PROMPT A -->
+    <!-- HELIOS GRID -->
     <div class="prompt-container">
-        <h3>Prompt A: Cyberpunk Detective</h3>
+        <h3>Helios-Distilled: Cyberpunk Detective</h3>
         <div class="prompt-text">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
         
         <div class="resolution-row">
             <div class="grid">
                 <div class="video-card">
                     <video src="assets/benchmark_hardware_1_1_1_A.mp4" controls loop preload="none"></video>
-                    <div class="steps-label">[1, 1, 1] Steps</div>
+                    <div class="steps-label">Helios [1, 1, 1] Steps</div>
                     <div class="stats-label">High Speed (Degraded)</div>
                 </div>
                 <div class="video-card">
                     <video src="assets/benchmark_hardware_2_2_2_A.mp4" controls loop preload="none"></video>
-                    <div class="steps-label">[2, 2, 2] Steps</div>
+                    <div class="steps-label">Helios [2, 2, 2] Steps</div>
                     <div class="stats-label">High Quality (Stuttering)</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- PROMPT B -->
-    <div class="prompt-container">
-        <h3>Prompt B: Drone Shot Metropolis</h3>
+        <h3>Helios-Distilled: Drone Shot Metropolis</h3>
         <div class="prompt-text">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
         
         <div class="resolution-row">
             <div class="grid">
                 <div class="video-card">
                     <video src="assets/benchmark_hardware_1_1_1_B.mp4" controls loop preload="none"></video>
-                    <div class="steps-label">[1, 1, 1] Steps</div>
+                    <div class="steps-label">Helios [1, 1, 1] Steps</div>
                     <div class="stats-label">High Speed (Degraded)</div>
                 </div>
                 <div class="video-card">
                     <video src="assets/benchmark_hardware_2_2_2_B.mp4" controls loop preload="none"></video>
-                    <div class="steps-label">[2, 2, 2] Steps</div>
+                    <div class="steps-label">Helios [2, 2, 2] Steps</div>
                     <div class="stats-label">High Quality (Stuttering)</div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- MEMFLOW GRID -->
+    <div class="prompt-container">
+        <h3>MemFlow: Cyberpunk Detective</h3>
+        <div class="prompt-text">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
+        
+        <div class="resolution-row">
+            <div class="resolution-header">MemFlow 512 x 288</div>
+            <div class="grid">
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 49.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 36.7 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 22.1 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 16.3 FPS</div></div>
+            </div>
+        </div>
+
+        <div class="resolution-row">
+            <div class="resolution-header">MemFlow 848 x 480</div>
+            <div class="grid">
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 28.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 20.6 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 13.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 9.3 FPS</div></div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 40px;">MemFlow: Drone Shot Metropolis</h3>
+        <div class="prompt-text">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
+        
+        <div class="resolution-row">
+            <div class="resolution-header">MemFlow 512 x 288</div>
+            <div class="grid">
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 47.2 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 34.8 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 23.0 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 16.7 FPS</div></div>
+            </div>
+        </div>
+
+        <div class="resolution-row">
+            <div class="resolution-header">MemFlow 848 x 480</div>
+            <div class="grid">
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div><div class="stats-label">20.0s @ 28.7 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div><div class="stats-label">20.0s @ 20.5 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div><div class="stats-label">20.0s @ 13.3 FPS</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div><div class="stats-label">20.0s @ 9.4 FPS</div></div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
