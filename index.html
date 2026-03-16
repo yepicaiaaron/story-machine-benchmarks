@@ -186,6 +186,11 @@
     <hr style="border-color: #333; margin-bottom: 40px; margin-top: 40px;">
     <div class="compare-section" style="border-color: #eab308; background: #2a2012;">
         <h2>RIFE Upscaling Impact (4 Inference Steps)</h2>
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; text-align: left; margin-bottom: 25px; font-size: 0.95em; color: #ddd; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            <strong style="color: #eab308;">What is RIFE?</strong><br>
+            RIFE (Real-Time Intermediate Flow Estimation) is an AI model used for Video Frame Interpolation. Instead of forcing the heavy diffusion model (MemFlow) to render every single frame of a 30 FPS video—which takes massive compute—MemFlow can generate a low-framerate base video (e.g., 6-11 FPS). RIFE then acts as a post-processor, intelligently hallucinating and inserting the "in-between" frames to artificially triple the framerate to a smooth 20-30+ FPS.<br><br>
+            <strong>The Impact:</strong> This allows us to achieve buttery-smooth cinematic playback while freeing up the H100 GPU to spend more compute time on the base frames (running higher inference steps for better prompt adherence and visual quality). Below, you can directly compare the choppy, raw output from MemFlow against the fluid, upscaled result after passing through the RIFE pipeline.
+        </div>
         <p style="color: #aaa; margin-bottom: 20px;">Direct comparison of the raw MemFlow output vs the RIFE-interpolated output across resolutions.</p>
         
         <div class="controls">
