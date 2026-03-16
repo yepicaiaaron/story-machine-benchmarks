@@ -562,6 +562,17 @@
                     <li><strong>Latent Caching (VACE):</strong> Enforcing continuous visual narrative by selectively bleeding latent noise from previous scenes into new generations to maintain the same subject and environment.</li>
                 </ul>
             </article>
+
+            <article class="article-card" style="grid-column: 1 / -1;">
+                <h3>Plans for the Future</h3>
+                <p>Our roadmap for achieving zero-latency cinematic real-time generation includes massive architectural upgrades to the Helios foundation models:</p>
+                <ul>
+                    <li><strong>NVIDIA Blackwell (B200) Integration:</strong> Leveraging the 8 TB/s of HBM3e bandwidth and FlashAttention-4 to shatter current memory-bound diffusion limits.</li>
+                    <li><strong>3-Stage Asynchronous Pipeline:</strong> Splitting the workload across multiple GPUs using NVLink—GPU 0 handles raw Latent generation, while GPU 1 processes VAE decoding and RIFE asynchronously.</li>
+                    <li><strong>FP8/NVFP4 Quantization via LightX2V:</strong> Doubling matrix multiplication throughput and halving the VRAM footprint so we can run high-step generation at low-step speeds.</li>
+                    <li><strong>FlowGRPO Reinforcement Learning:</strong> Using GenRL to fine-tune the model with Motion Quality and Aesthetic rewards, allowing low-step renders to look structurally flawless.</li>
+                </ul>
+            </article>
         </section>
     </div>
 
