@@ -4,81 +4,212 @@
     <title>H100 MemFlow Benchmarks</title>
     <style>
         body { font-family: sans-serif; background: #121212; color: #fff; padding: 20px; }
-        h1, h2 { text-align: center; }
+        h1, h2, h3 { text-align: center; }
         .prompt-container { margin-bottom: 40px; padding: 20px; background: #1e1e1e; border-radius: 8px; }
         .prompt-text { font-size: 1.1em; color: #aaa; text-align: center; margin-bottom: 20px; font-style: italic; }
         .resolution-row { display: flex; flex-direction: column; margin-bottom: 30px; }
         .resolution-header { font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; color: #4ade80; }
         .grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
         .video-card { background: #000; padding: 10px; border-radius: 6px; width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        video { width: 100%; border-radius: 4px; outline: none; }
+        video { width: 100%; border-radius: 4px; outline: none; background: #222; }
         .steps-label { margin-top: 10px; font-weight: bold; font-size: 1.1em; }
+        
+        .compare-section { background: #1a1a2e; padding: 30px; border-radius: 8px; margin-bottom: 40px; text-align: center; border: 1px solid #2a2a4e; }
+        .compare-grid { display: flex; justify-content: center; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+        .compare-col { display: flex; flex-direction: column; align-items: center; width: 45%; min-width: 300px; }
+        .compare-col video { width: 100%; max-width: 848px; aspect-ratio: 16/9; }
+        .controls { margin-top: 20px; margin-bottom: 20px; }
+        select { padding: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 4px; font-size: 1em; width: 100%; max-width: 500px; margin-bottom: 15px; }
+        button { padding: 12px 30px; font-size: 1.2em; background: #4ade80; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        button:hover { background: #22c55e; }
     </style>
 </head>
 <body>
-    <h1>H100 Diffusion Steps & Resolution Benchmark (20s Clips)</h1>
+    <h1>H100 Diffusion Benchmark (20s Clips)</h1>
     <p style="text-align: center;">Side-by-side comparison of rendering quality vs compute steps.</p>
 
+    <!-- SIDE-BY-SIDE COMPARISON TOOL -->
+    <div class="compare-section">
+        <h2>Interactive Side-by-Side Comparison</h2>
+        <p style="color: #aaa; margin-bottom: 20px;">Select two videos to compare and hit Play.</p>
+        
+        <div class="controls">
+            <button id="syncPlayBtn">▶ Play Both Synchronized</button>
+        </div>
+
+        <div class="compare-grid">
+            <div class="compare-col">
+                <select id="videoSelect1" onchange="updateVideo('video1', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective (512x288)">
+                        <option value="videos/clip_p0_res512x288_steps2.webm">Prompt A - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps3.webm">Prompt A - 512x288 - 3 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps4.webm">Prompt A - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps6.webm">Prompt A - 512x288 - 6 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps8.webm" selected>Prompt A - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps10.webm">Prompt A - 512x288 - 10 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps12.webm">Prompt A - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt A: Cyberpunk Detective (848x480)">
+                        <option value="videos/clip_p0_res848x480_steps2.webm">Prompt A - 848x480 - 2 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps3.webm">Prompt A - 848x480 - 3 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps4.webm">Prompt A - 848x480 - 4 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps6.webm">Prompt A - 848x480 - 6 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps8.webm">Prompt A - 848x480 - 8 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps10.webm">Prompt A - 848x480 - 10 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps12.webm">Prompt A - 848x480 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis (512x288)">
+                        <option value="videos/clip_p1_res512x288_steps2.webm">Prompt B - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps3.webm">Prompt B - 512x288 - 3 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps4.webm">Prompt B - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps6.webm">Prompt B - 512x288 - 6 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps8.webm">Prompt B - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps10.webm">Prompt B - 512x288 - 10 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps12.webm">Prompt B - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis (848x480)">
+                        <option value="videos/clip_p1_res848x480_steps2.webm">Prompt B - 848x480 - 2 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps3.webm">Prompt B - 848x480 - 3 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps4.webm">Prompt B - 848x480 - 4 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps6.webm">Prompt B - 848x480 - 6 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps8.webm">Prompt B - 848x480 - 8 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps10.webm">Prompt B - 848x480 - 10 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps12.webm">Prompt B - 848x480 - 12 Steps</option>
+                    </optgroup>
+                </select>
+                <video id="video1" src="videos/clip_p0_res512x288_steps8.webm" controls muted playsinline></video>
+            </div>
+
+            <div class="compare-col">
+                <select id="videoSelect2" onchange="updateVideo('video2', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective (512x288)">
+                        <option value="videos/clip_p0_res512x288_steps2.webm">Prompt A - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps3.webm">Prompt A - 512x288 - 3 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps4.webm">Prompt A - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps6.webm">Prompt A - 512x288 - 6 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps8.webm">Prompt A - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps10.webm">Prompt A - 512x288 - 10 Steps</option>
+                        <option value="videos/clip_p0_res512x288_steps12.webm" selected>Prompt A - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt A: Cyberpunk Detective (848x480)">
+                        <option value="videos/clip_p0_res848x480_steps2.webm">Prompt A - 848x480 - 2 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps3.webm">Prompt A - 848x480 - 3 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps4.webm">Prompt A - 848x480 - 4 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps6.webm">Prompt A - 848x480 - 6 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps8.webm">Prompt A - 848x480 - 8 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps10.webm">Prompt A - 848x480 - 10 Steps</option>
+                        <option value="videos/clip_p0_res848x480_steps12.webm">Prompt A - 848x480 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis (512x288)">
+                        <option value="videos/clip_p1_res512x288_steps2.webm">Prompt B - 512x288 - 2 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps3.webm">Prompt B - 512x288 - 3 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps4.webm">Prompt B - 512x288 - 4 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps6.webm">Prompt B - 512x288 - 6 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps8.webm">Prompt B - 512x288 - 8 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps10.webm">Prompt B - 512x288 - 10 Steps</option>
+                        <option value="videos/clip_p1_res512x288_steps12.webm">Prompt B - 512x288 - 12 Steps</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis (848x480)">
+                        <option value="videos/clip_p1_res848x480_steps2.webm">Prompt B - 848x480 - 2 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps3.webm">Prompt B - 848x480 - 3 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps4.webm">Prompt B - 848x480 - 4 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps6.webm">Prompt B - 848x480 - 6 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps8.webm">Prompt B - 848x480 - 8 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps10.webm">Prompt B - 848x480 - 10 Steps</option>
+                        <option value="videos/clip_p1_res848x480_steps12.webm">Prompt B - 848x480 - 12 Steps</option>
+                    </optgroup>
+                </select>
+                <video id="video2" src="videos/clip_p0_res512x288_steps12.webm" controls muted playsinline></video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateVideo(videoId, src) {
+            const vid = document.getElementById(videoId);
+            vid.src = src;
+            vid.load();
+        }
+
+        document.getElementById('syncPlayBtn').addEventListener('click', function() {
+            const v1 = document.getElementById('video1');
+            const v2 = document.getElementById('video2');
+            
+            // Reset both to start
+            v1.currentTime = 0;
+            v2.currentTime = 0;
+            
+            // Play both
+            v1.play();
+            v2.play();
+        });
+    </script>
+
+    <hr style="border-color: #333; margin-bottom: 40px;">
+
+    <!-- ALL CLIPS GRID (Keep for reference) -->
+    <h2 style="color: #666; margin-bottom: 30px;">All Generated Clips Matrix</h2>
+    
     <!-- PROMPT 0 -->
     <div class="prompt-container">
-        <h2>Prompt A: Cyberpunk Detective</h2>
+        <h3>Prompt A: Cyberpunk Detective</h3>
         <div class="prompt-text">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
         
         <div class="resolution-row">
             <div class="resolution-header">512 x 288 (Native)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
             </div>
         </div>
 
         <div class="resolution-row">
             <div class="resolution-header">848 x 480 (High-Res Cinematic)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
             </div>
         </div>
     </div>
 
     <!-- PROMPT 1 -->
     <div class="prompt-container">
-        <h2>Prompt B: Drone Shot Metropolis</h2>
+        <h3>Prompt B: Drone Shot Metropolis</h3>
         <div class="prompt-text">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
         
         <div class="resolution-row">
             <div class="resolution-header">512 x 288 (Native)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
             </div>
         </div>
 
         <div class="resolution-row">
             <div class="resolution-header">848 x 480 (High-Res Cinematic)</div>
             <div class="grid">
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop></video><div class="steps-label">2 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop></video><div class="steps-label">3 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop></video><div class="steps-label">4 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop></video><div class="steps-label">6 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop></video><div class="steps-label">8 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop></video><div class="steps-label">10 Steps</div></div>
-                <div class="video-card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop></video><div class="steps-label">12 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="steps-label">2 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="steps-label">3 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="steps-label">4 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="steps-label">6 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="steps-label">8 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="steps-label">10 Steps</div></div>
+                <div class="video-card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="steps-label">12 Steps</div></div>
             </div>
         </div>
     </div>
