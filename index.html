@@ -181,6 +181,50 @@
         });
     </script>
 
+    
+    <!-- RIFE COMPARISON -->
+    <hr style="border-color: #333; margin-bottom: 40px; margin-top: 40px;">
+    <div class="compare-section" style="border-color: #eab308; background: #2a2012;">
+        <h2>RIFE Upscaling Impact (4 Inference Steps)</h2>
+        <p style="color: #aaa; margin-bottom: 20px;">Direct comparison of the raw MemFlow output vs the RIFE-interpolated output across resolutions.</p>
+        
+        <div class="controls">
+            <button id="syncPlayBtnRife" style="background: #eab308; color: #000; padding: 12px 30px; font-size: 1.2em; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">▶ Play Both Synchronized</button>
+        </div>
+
+        <div class="compare-grid">
+            <div class="compare-col">
+                <select id="videoSelectRife1" onchange="updateVideoRife('videoRife1', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective">
+                        <option value="videos/clip_p0_res512x288_steps4_norife.webm" selected>512x288 - No RIFE (11.0 FPS)</option>
+                        <option value="videos/clip_p0_res848x480_steps4_norife.webm">848x480 - No RIFE (6.3 FPS)</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis">
+                        <option value="videos/clip_p1_res512x288_steps4_norife.webm">512x288 - No RIFE (20.4 FPS)</option>
+                        <option value="videos/clip_p1_res848x480_steps4_norife.webm">848x480 - No RIFE (11.4 FPS)</option>
+                    </optgroup>
+                </select>
+                <video id="videoRife1" src="videos/clip_p0_res512x288_steps4_norife.webm" controls muted playsinline></video>
+                <div id="statsRife1" class="compare-stats" style="color: #eab308;">11.0 FPS (Raw Output)</div>
+            </div>
+
+            <div class="compare-col">
+                <select id="videoSelectRife2" onchange="updateVideoRife('videoRife2', this.value)">
+                    <optgroup label="Prompt A: Cyberpunk Detective">
+                        <option value="videos/clip_p0_res512x288_steps4.webm" selected>512x288 - With RIFE (36.7 FPS)</option>
+                        <option value="videos/clip_p0_res848x480_steps4.webm">848x480 - With RIFE (20.6 FPS)</option>
+                    </optgroup>
+                    <optgroup label="Prompt B: Drone Metropolis">
+                        <option value="videos/clip_p1_res512x288_steps4.webm">512x288 - With RIFE (34.8 FPS)</option>
+                        <option value="videos/clip_p1_res848x480_steps4.webm">848x480 - With RIFE (20.5 FPS)</option>
+                    </optgroup>
+                </select>
+                <video id="videoRife2" src="videos/clip_p0_res512x288_steps4.webm" controls muted playsinline></video>
+                <div id="statsRife2" class="compare-stats" style="color: #eab308;">36.7 FPS (Interpolated)</div>
+            </div>
+        </div>
+    </div>
+
     <hr style="border-color: #333; margin-bottom: 40px;">
 
     <!-- ALL CLIPS GRID -->
