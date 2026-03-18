@@ -584,23 +584,24 @@
 
         <hr style="border-color: #333; margin-top: 40px; margin-bottom: 40px;">
         <h2 class="section-title">Further Enhancements & Future Plans</h2>
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 60px;">
-            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 60px; align-items: stretch;">
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px; height: auto; overflow: visible;">
                 <h3 style="color: var(--accent); margin-bottom: 15px;">Frame Interpolation (RIFE)</h3>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Generating every single frame through a heavy diffusion network takes massive compute. Modern real-time pipelines circumvent this by generating a low-framerate base video (e.g., 6-11 FPS) and applying <strong>RIFE</strong> (Real-Time Intermediate Flow Estimation).</p>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">RIFE intelligently hallucinates the "in-between" frames to artificially upscale the playback to a fluid 30+ FPS. This essential technique preserves critical GPU compute, allowing it to be spent running higher inference steps on the base frames for vastly improved visual coherence and prompt adherence.</p>
             </div>
 
-            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
-                <h3 style="color: var(--accent); margin-bottom: 15px;">Enhancement Techniques</h3>
-                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Beyond temporal interpolation, the Story Machine architecture employs multiple advanced strategies to elevate real-time fidelity:</p>
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px; height: auto; overflow: visible;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">Real-Time Pipeline (MemFlow & Helios)</h3>
+                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">After consulting with our multi-agent swarm (Architect & Scholar), we've implemented several critical optimizations to push real-time video generation limits:</p>
                 <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px;">
-                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Spatial Upscaling (Real-ESRGAN, Topaz):</strong> Applied post-generation to boost per-frame resolution (e.g., upscaling 288p to 1080p) without taxing the core diffusion model's latent generation space.</li>
-                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Temporal Consistency (FlashVSR):</strong> Dedicated enhancer networks applied to sequences to reduce flickering and enforce geometric stability across moving elements over time.</li>
-                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Latent Caching (VACE):</strong> Enforcing continuous visual narrative by selectively bleeding latent noise from previous scenes into new generations to maintain the same subject and environment.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Denoising Step Reduction:</strong> By dropping the MemFlow diffusion steps down to 4, we significantly reduce GPU workload, achieving a much faster native frame generation rate while preserving the core aesthetic.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Dynamic Audio Steering:</strong> Integrating the Lyria Music API via a persistent WebSocket thread. Instead of hard-restarting the audio track per scene, we dynamically steer the prompt so the cinematic underscore evolves seamlessly.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Context Cache Clearing:</strong> Actively managing the VACE (Context Enforcement) tensors to prevent PyTorch dimension mismatches while preparing the pipeline for continuous narrative generation.</li>
                 </ul>
             </div>
-            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px;">
+
+            <div style="flex: 1; min-width: 300px; background: var(--surface); padding: 30px; border: 1px solid var(--surface-border); border-radius: 8px; height: auto; overflow: visible;">
                 <h3 style="color: var(--accent); margin-bottom: 15px;">Plans for the Future</h3>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">Our roadmap for achieving zero-latency cinematic real-time generation includes massive architectural upgrades to the Helios foundation models:</p>
                 <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px;">
@@ -611,7 +612,6 @@
                 </ul>
             </div>
         </div>
-    </div>
 
     <script>
         // Data Store
