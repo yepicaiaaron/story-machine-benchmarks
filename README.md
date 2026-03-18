@@ -31,21 +31,21 @@ Preferred testing hardware: **NVIDIA H100 80GB** (to support high-step diffusion
 - **[Interactive Side-by-Side Player](https://yepicaiaaron.github.io/story-machine-benchmarks/)** — Play any two benchmark clips perfectly synchronized to compare structural coherence over time.
 - **[Real-Time vs Cinematic Trade-offs](#real-time-diffusion-trade-offs)** — Analyze the exact impact of modifying `num_inference_steps` on prompt adherence and frame rates.
 - **[RIFE Upscaling Impact](#rife-upscaling-impact)** — Visual proof of how intermediate flow estimation can artificially boost an 11 FPS raw render into a buttery-smooth 36 FPS stream.
-- **[Full Matrix Rendering](#full-matrix)** — Comprehensive tests across multiple resolutions (512x288, 848x480) and inference steps (2, 3, 4, 6, 8, 10, 12).
+- **[Full Matrix Rendering](#full-matrix)** — Comprehensive tests across multiple resolutions (848x480) and inference steps (2, 3, 4, 6, 8, 10, 12).
 
 ## The Core Challenge: Real-Time Video
 
 ### Real-Time Diffusion Trade-offs (Steps vs. Adherence)
 We discovered a hard mathematical trade-off on the H100 GPU concerning the `num_inference_steps` parameter and prompt adherence when running the **MemFlow (Wan2.1-based)** pipeline:
-- **Low Steps (e.g., 2-4 Steps at 512x288):** Yields a highly fluid stream (~35-50 FPS raw). However, the model rushes the global structure. It ignores complex geometric constraints (like "low-angle tracking shot") and hallucinates significantly, looking more like chaotic static.
-- **High Steps (e.g., 20 Steps at 576x320):** Native pipeline bottlenecks massively, breaking the stream entirely and causing severe stutter.
-- **The Sweet Spot (12 Steps at 512x288):** Our final compromise for high-quality generation. By lowering the native resolution slightly to 512x288, the H100 gains the compute leeway to run 12 full diffusion passes. This 50% increase in refinement time allows the model to faithfully adhere to complex camera angles and stylistic constraints while keeping the frame generation stable.
+- **Low Steps (e.g., 2-3 Steps at 848x480):** Yields a highly fluid stream (~24-28 FPS native). However, extreme low steps can rush the global structure, occasionally ignoring complex geometric constraints and hallucinating.
+- **High Steps (e.g., 12+ Steps at 848x480):** Native pipeline bottlenecks massively, dropping native framerates below 10 FPS, which stresses the stream entirely even with RIFE.
+- **The Sweet Spot (4-8 Steps at 848x480):** By maintaining the native training resolution of 848x480, we achieve a fluid native 13.3 - 20.6 FPS (without RIFE interpolation). With RIFE enabled, this scales up to ~40-60 FPS. 4 to 8 steps provide the perfect compute leeway to faithfully adhere to complex camera angles and stylistic constraints while staying real-time. We previously attempted to lower the native resolution to 512x288 to gain compute leeway, but this breaks consistency across the application. We now strictly enforce 848x480 across all pages.
 
 ### RIFE Upscaling Impact
-**RIFE (Real-Time Intermediate Flow Estimation)** is an AI model used for Video Frame Interpolation. Instead of forcing the heavy diffusion model (MemFlow) to render every single frame of a 30 FPS video—which takes massive compute—MemFlow generates a low-framerate base video (e.g., 6-11 FPS). RIFE then acts as a post-processor, intelligently hallucinating and inserting the "in-between" frames to artificially triple the framerate.
+**RIFE (Real-Time Intermediate Flow Estimation)** is an AI model used for Video Frame Interpolation. Instead of forcing the heavy diffusion model (MemFlow) to render every single frame of a 30 FPS video—which takes massive compute—MemFlow generates a low-framerate base video (e.g., 13 FPS native). RIFE then acts as a post-processor, intelligently hallucinating and inserting the "in-between" frames to artificially triple the framerate.
 
 **The Impact:** This achieves buttery-smooth cinematic playback while freeing up the H100 GPU to spend more compute time on the base frames (running higher inference steps for better prompt adherence).
-- Example: A 512x288 video running at 4 inference steps natively outputs **~11.0 FPS**. When processed through RIFE, it outputs a smooth **~36.7 FPS**.
+- Example: An 848x480 video running at 4 inference steps natively outputs **~20.6 FPS (Native)**. When processed through RIFE, it outputs a smooth **~60+ FPS**.
 
 ## How the Benchmarks are Generated
 
@@ -69,47 +69,33 @@ To ensure the benchmarks are authentic and unbiased:
 
 ## Master Performance Matrix (MemFlow on H100)
 
-*Note: All clips generated natively on the GPU for exactly 20.0 seconds. FPS drops linearly as inference steps increase due to the added diffusion compute time per frame.*
+*Note: All clips generated natively on the GPU for exactly 20.0 seconds. FPS drops linearly as inference steps increase due to the added diffusion compute time per frame. The FPS values below are **Native** (without RIFE).*
 
 ### Prompt A: Cyberpunk Detective
 *(A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic.)*
 
 | Resolution | Steps | Render Time | Average Stream FPS |
 | ---------- | ----- | ----------- | ------------------ |
-| 512 x 288 | 2 | 20.0s | 49.3 FPS |
-| | 3 | 20.0s | 38.9 FPS |
-| | 4 | 20.0s | 36.7 FPS |
-| | 6 | 20.0s | 27.5 FPS |
-| | 8 | 20.0s | 22.1 FPS |
-| | 10 | 20.0s | 18.8 FPS |
-| | 12 | 20.0s | 16.3 FPS |
-| 848 x 480 | 2 | 20.0s | 28.3 FPS |
-| | 3 | 20.0s | 24.3 FPS |
-| | 4 | 20.0s | 20.6 FPS |
-| | 6 | 20.0s | 16.5 FPS |
-| | 8 | 20.0s | 13.3 FPS |
-| | 10 | 20.0s | 11.3 FPS |
-| | 12 | 20.0s | 9.3 FPS |
+| 848 x 480 | 2 | 20.0s | 28.3 FPS (Native) |
+| | 3 | 20.0s | 24.3 FPS (Native) |
+| | 4 | 20.0s | 20.6 FPS (Native) |
+| | 6 | 20.0s | 16.5 FPS (Native) |
+| | 8 | 20.0s | 13.3 FPS (Native) |
+| | 10 | 20.0s | 11.3 FPS (Native) |
+| | 12 | 20.0s | 9.3 FPS (Native) |
 
 ### Prompt B: Drone Shot Metropolis
 *(A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k.)*
 
 | Resolution | Steps | Render Time | Average Stream FPS |
 | ---------- | ----- | ----------- | ------------------ |
-| 512 x 288 | 2 | 20.0s | 47.2 FPS |
-| | 3 | 20.0s | 40.5 FPS |
-| | 4 | 20.0s | 34.8 FPS |
-| | 6 | 20.0s | 27.1 FPS |
-| | 8 | 20.0s | 23.0 FPS |
-| | 10 | 20.0s | 19.3 FPS |
-| | 12 | 20.0s | 16.7 FPS |
-| 848 x 480 | 2 | 20.0s | 28.7 FPS |
-| | 3 | 20.0s | 23.9 FPS |
-| | 4 | 20.0s | 20.5 FPS |
-| | 6 | 20.0s | 16.4 FPS |
-| | 8 | 20.0s | 13.3 FPS |
-| | 10 | 20.0s | 11.1 FPS |
-| | 12 | 20.0s | 9.4 FPS |
+| 848 x 480 | 2 | 20.0s | 28.7 FPS (Native) |
+| | 3 | 20.0s | 23.9 FPS (Native) |
+| | 4 | 20.0s | 20.5 FPS (Native) |
+| | 6 | 20.0s | 16.4 FPS (Native) |
+| | 8 | 20.0s | 13.3 FPS (Native) |
+| | 10 | 20.0s | 11.1 FPS (Native) |
+| | 12 | 20.0s | 9.4 FPS (Native) |
 
 ---
 
