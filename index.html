@@ -430,24 +430,6 @@
                             <option value="assets/benchmark_hardware_1_1_1_B.mp4">Helios - Prompt B - [1, 1, 1] Steps</option>
                             <option value="assets/benchmark_hardware_2_2_2_B.mp4">Helios - Prompt B - [2, 2, 2] Steps</option>
                         </optgroup>
-                        <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 512x288)">
-                            <option value="videos/clip_p0_res512x288_steps2.webm">MemFlow - Prompt A - 512x288 - 2 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps4.webm">MemFlow - Prompt A - 512x288 - 4 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps8.webm">MemFlow - Prompt A - 512x288 - 8 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps12.webm">MemFlow - Prompt A - 512x288 - 12 Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 848x480)">
-                            <option value="videos/clip_p0_res848x480_steps2.webm">MemFlow - Prompt A - 848x480 - 2 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps4.webm">MemFlow - Prompt A - 848x480 - 4 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps8.webm">MemFlow - Prompt A - 848x480 - 8 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps12.webm">MemFlow - Prompt A - 848x480 - 12 Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt B: Drone Metropolis 512x288)">
-                            <option value="videos/clip_p1_res512x288_steps2.webm">MemFlow - Prompt B - 512x288 - 2 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps4.webm">MemFlow - Prompt B - 512x288 - 4 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps8.webm">MemFlow - Prompt B - 512x288 - 8 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps12.webm">MemFlow - Prompt B - 512x288 - 12 Steps</option>
-                        </optgroup>
                         <optgroup label="MemFlow (Prompt B: Drone Metropolis 848x480)">
                             <option value="videos/clip_p1_res848x480_steps2.webm">MemFlow - Prompt B - 848x480 - 2 Steps</option>
                             <option value="videos/clip_p1_res848x480_steps4.webm">MemFlow - Prompt B - 848x480 - 4 Steps</option>
@@ -456,56 +438,11 @@
                         </optgroup>
                     </select>
                     <div class="video-wrapper">
-                        <video id="video1" src="assets/benchmark_hardware_2_2_2_A.mp4" controls muted playsinline></video>
-                    </div>
-                    <div class="stats-display">
-                        <span id="stats1_title">Helios High Quality</span>
-                        <span id="stats1_val">--</span>
-                    </div>
-                </div>
-
-                <!-- Video 2 -->
-                <div class="video-col">
-                    <select id="videoSelect2" onchange="updateVideo('video2', this.value)">
-                        <optgroup label="Helios-Distilled (Prompt A: Cyberpunk Detective)">
-                            <option value="assets/benchmark_hardware_1_1_1_A.mp4">Helios - Prompt A - [1, 1, 1] Steps</option>
-                            <option value="assets/benchmark_hardware_2_2_2_A.mp4">Helios - Prompt A - [2, 2, 2] Steps</option>
-                        </optgroup>
-                        <optgroup label="Helios-Distilled (Prompt B: Drone Metropolis)">
-                            <option value="assets/benchmark_hardware_1_1_1_B.mp4">Helios - Prompt B - [1, 1, 1] Steps</option>
-                            <option value="assets/benchmark_hardware_2_2_2_B.mp4">Helios - Prompt B - [2, 2, 2] Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 512x288)">
-                            <option value="videos/clip_p0_res512x288_steps2.webm">MemFlow - Prompt A - 512x288 - 2 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps4.webm">MemFlow - Prompt A - 512x288 - 4 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps8.webm" selected>MemFlow - Prompt A - 512x288 - 8 Steps</option>
-                            <option value="videos/clip_p0_res512x288_steps12.webm">MemFlow - Prompt A - 512x288 - 12 Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt A: Cyberpunk Detective 848x480)">
-                            <option value="videos/clip_p0_res848x480_steps2.webm">MemFlow - Prompt A - 848x480 - 2 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps4.webm">MemFlow - Prompt A - 848x480 - 4 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps8.webm">MemFlow - Prompt A - 848x480 - 8 Steps</option>
-                            <option value="videos/clip_p0_res848x480_steps12.webm">MemFlow - Prompt A - 848x480 - 12 Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt B: Drone Metropolis 512x288)">
-                            <option value="videos/clip_p1_res512x288_steps2.webm">MemFlow - Prompt B - 512x288 - 2 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps4.webm">MemFlow - Prompt B - 512x288 - 4 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps8.webm">MemFlow - Prompt B - 512x288 - 8 Steps</option>
-                            <option value="videos/clip_p1_res512x288_steps12.webm">MemFlow - Prompt B - 512x288 - 12 Steps</option>
-                        </optgroup>
-                        <optgroup label="MemFlow (Prompt B: Drone Metropolis 848x480)">
-                            <option value="videos/clip_p1_res848x480_steps2.webm">MemFlow - Prompt B - 848x480 - 2 Steps</option>
-                            <option value="videos/clip_p1_res848x480_steps4.webm">MemFlow - Prompt B - 848x480 - 4 Steps</option>
-                            <option value="videos/clip_p1_res848x480_steps8.webm">MemFlow - Prompt B - 848x480 - 8 Steps</option>
-                            <option value="videos/clip_p1_res848x480_steps12.webm">MemFlow - Prompt B - 848x480 - 12 Steps</option>
-                        </optgroup>
-                    </select>
-                    <div class="video-wrapper">
-                        <video id="video2" src="videos/clip_p0_res512x288_steps8.webm" controls muted playsinline></video>
+                        <video id="video2" src="videos/clip_p0_res848x480_steps8.webm" controls muted playsinline></video>
                     </div>
                     <div class="stats-display">
                         <span id="stats2_title">MemFlow [8 Steps]</span>
-                        <span id="stats2_val">22.1 FPS</span>
+                        <span id="stats2_val">13.3 FPS (Native)</span>
                     </div>
                 </div>
             </div>
@@ -520,30 +457,20 @@
             <div class="prompt-block">
                 <h3>01 / CYBERPUNK DETECTIVE</h3>
                 <div class="prompt-desc">"A cinematic low-angle tracking shot of a cyberpunk detective walking down a neon-lit alleyway in the rain, 8k, photorealistic."</div>
-                
-                <div class="res-group">
-                    <div class="res-header">MemFlow <span>512 x 288</span></div>
-                                        <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">49.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">38.9 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">36.7 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">27.5 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">22.1 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">18.8 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">22.1 FPS (Native)</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>848 x 480</span></div>
                                         <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">24.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.6 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.5 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.3 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.3 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">24.3 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.6 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.5 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.3 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p0_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.3 FPS (Native)</span></div></div>
                     </div>
                 </div>
             </div>
@@ -551,30 +478,19 @@
             <div class="prompt-block">
                 <h3>02 / DRONE METROPOLIS</h3>
                 <div class="prompt-desc">"A dynamic drone shot sweeping over a futuristic sci-fi metropolis with flying cars and massive holographic advertisements, vivid colors, 4k."</div>
-                
-                <div class="res-group">
-                    <div class="res-header">MemFlow <span>512 x 288</span></div>
-                                        <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">47.2 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">40.5 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">34.8 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">27.1 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">23.0 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">19.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res512x288_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">16.7 FPS</span></div></div>
                     </div>
                 </div>
 
                 <div class="res-group">
                     <div class="res-header">MemFlow <span>848 x 480</span></div>
                                         <div class="cards-grid">
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.7 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">23.9 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.5 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.4 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.1 FPS</span></div></div>
-                        <div class="card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.4 FPS</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps2.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">2 STEPS</span><span class="card-fps">28.7 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps3.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">3 STEPS</span><span class="card-fps">23.9 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps4.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">4 STEPS</span><span class="card-fps">20.5 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps6.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">6 STEPS</span><span class="card-fps">16.4 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps8.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">8 STEPS</span><span class="card-fps">13.3 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps10.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">10 STEPS</span><span class="card-fps">11.1 FPS (Native)</span></div></div>
+                        <div class="card"><video src="videos/clip_p1_res848x480_steps12.webm" controls loop preload="none"></video><div class="card-info"><span class="card-steps">12 STEPS</span><span class="card-fps">9.4 FPS (Native)</span></div></div>
                     </div>
                 </div>
             </div>
@@ -595,7 +511,7 @@
                 <h3 style="color: var(--accent); margin-bottom: 15px;">Real-Time Pipeline (MemFlow & Helios)</h3>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">After consulting with our multi-agent swarm (Architect & Scholar), we've implemented several critical optimizations to push real-time video generation limits:</p>
                 <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px;">
-                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Denoising Step Reduction:</strong> By dropping the MemFlow diffusion steps down to 4, we significantly reduce GPU workload, achieving a much faster native frame generation rate while preserving the core aesthetic.</li>
+                    <li style="margin-bottom: 10px;"><strong style="color: #fff;">Denoising Step Reduction:</strong> By dropping the MemFlow diffusion steps to the "Sweet Spot" (4-8 steps at native 848x480 resolution), we significantly reduce GPU workload, achieving a much faster native frame generation rate while preserving the core aesthetic.</li>
                     <li style="margin-bottom: 10px;"><strong style="color: #fff;">Dynamic Audio Steering:</strong> Integrating the Lyria Music API via a persistent WebSocket thread. Instead of hard-restarting the audio track per scene, we dynamically steer the prompt so the cinematic underscore evolves seamlessly.</li>
                     <li style="margin-bottom: 10px;"><strong style="color: #fff;">Context Cache Clearing:</strong> Actively managing the VACE (Context Enforcement) tensors to prevent PyTorch dimension mismatches while preparing the pipeline for continuous narrative generation.</li>
                 </ul>
@@ -616,32 +532,18 @@
     <script>
         // Data Store
         const videoData = {
-            "benchmark_hardware_1_1_1_A.mp4": { title: "Helios [1,1,1]", fps: "12.8 FPS" }, 
-            "benchmark_hardware_2_2_2_A.mp4": { title: "Helios [2,2,2]", fps: "11.0 FPS" }, 
-            "benchmark_hardware_1_1_1_B.mp4": { title: "Helios [1,1,1]", fps: "12.8 FPS" }, 
-            "benchmark_hardware_2_2_2_B.mp4": { title: "Helios [2,2,2]", fps: "11.0 FPS" },
-            "clip_p0_res512x288_steps2.webm": { title: "MemFlow [2 Steps]", fps: "49.3 FPS" }, 
-            "clip_p0_res512x288_steps3.webm": { title: "MemFlow [3 Steps]", fps: "38.9 FPS" }, 
-            "clip_p0_res512x288_steps4.webm": { title: "MemFlow [4 Steps]", fps: "36.7 FPS" }, 
-            "clip_p0_res512x288_steps6.webm": { title: "MemFlow [6 Steps]", fps: "27.5 FPS" }, 
-            "clip_p0_res512x288_steps8.webm": { title: "MemFlow [8 Steps]", fps: "22.1 FPS" }, 
-            "clip_p0_res512x288_steps10.webm": { title: "MemFlow [10 Steps]", fps: "18.8 FPS" }, 
-            "clip_p0_res512x288_steps12.webm": { title: "MemFlow [12 Steps]", fps: "16.3 FPS" },
-            "clip_p1_res512x288_steps2.webm": { title: "MemFlow [2 Steps]", fps: "47.2 FPS" }, 
-            "clip_p1_res512x288_steps3.webm": { title: "MemFlow [3 Steps]", fps: "40.5 FPS" }, 
-            "clip_p1_res512x288_steps4.webm": { title: "MemFlow [4 Steps]", fps: "34.8 FPS" }, 
-            "clip_p1_res512x288_steps6.webm": { title: "MemFlow [6 Steps]", fps: "27.1 FPS" }, 
-            "clip_p1_res512x288_steps8.webm": { title: "MemFlow [8 Steps]", fps: "23.0 FPS" }, 
-            "clip_p1_res512x288_steps10.webm": { title: "MemFlow [10 Steps]", fps: "19.3 FPS" }, 
-            "clip_p1_res512x288_steps12.webm": { title: "MemFlow [12 Steps]", fps: "16.7 FPS" },
-            "clip_p0_res848x480_steps2.webm": { title: "MemFlow [2 Steps]", fps: "28.3 FPS" },
-            "clip_p0_res848x480_steps4.webm": { title: "MemFlow [4 Steps]", fps: "20.6 FPS" },
-            "clip_p0_res848x480_steps8.webm": { title: "MemFlow [8 Steps]", fps: "13.3 FPS" },
-            "clip_p0_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.3 FPS" },
-            "clip_p1_res848x480_steps2.webm": { title: "MemFlow [2 Steps]", fps: "28.7 FPS" },
-            "clip_p1_res848x480_steps4.webm": { title: "MemFlow [4 Steps]", fps: "20.5 FPS" },
-            "clip_p1_res848x480_steps8.webm": { title: "MemFlow [8 Steps]", fps: "13.3 FPS" },
-            "clip_p1_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.4 FPS" }
+            "benchmark_hardware_1_1_1_A.mp4": { title: "Helios [1,1,1]", fps: "12.8 FPS (Native)" }, 
+            "benchmark_hardware_2_2_2_A.mp4": { title: "Helios [2,2,2]", fps: "11.0 FPS (Native)" }, 
+            "benchmark_hardware_1_1_1_B.mp4": { title: "Helios [1,1,1]", fps: "12.8 FPS (Native)" }, 
+            "benchmark_hardware_2_2_2_B.mp4": { title: "Helios [2,2,2]", fps: "11.0 FPS (Native)" },
+            "clip_p0_res848x480_steps2.webm": { title: "MemFlow [2 Steps]", fps: "28.3 FPS (Native)" },
+            "clip_p0_res848x480_steps4.webm": { title: "MemFlow [4 Steps]", fps: "20.6 FPS (Native)" },
+            "clip_p0_res848x480_steps8.webm": { title: "MemFlow [8 Steps]", fps: "13.3 FPS (Native)" },
+            "clip_p0_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.3 FPS (Native)" },
+            "clip_p1_res848x480_steps2.webm": { title: "MemFlow [2 Steps]", fps: "28.7 FPS (Native)" },
+            "clip_p1_res848x480_steps4.webm": { title: "MemFlow [4 Steps]", fps: "20.5 FPS (Native)" },
+            "clip_p1_res848x480_steps8.webm": { title: "MemFlow [8 Steps]", fps: "13.3 FPS (Native)" },
+            "clip_p1_res848x480_steps12.webm": { title: "MemFlow [12 Steps]", fps: "9.4 FPS (Native)" }
         };
 
         
